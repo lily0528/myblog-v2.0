@@ -1,0 +1,16 @@
+﻿@model DetailBlogViewModel
+@{
+    ViewBag.Title = "Details";
+}
+
+<p>@Model.Title</p>
+<p>@Model.pulished</p>
+<p>@Model.DateUpdated</p>
+<p>@Html.Raw(Model.Body)</p>
+
+<div class="row">
+    <div class="col-md-2">
+        <img class="img-responsive" src="@Url.Content(Model.MediaUrl)" />
+    </div>
+</div>
+

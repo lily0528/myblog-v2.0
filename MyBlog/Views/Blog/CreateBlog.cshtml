@@ -1,0 +1,43 @@
+﻿@model CreateBlogViewModel
+@{
+    ViewBag.Title = "CreateBlog";
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
+    <script src="~/Scripts/CreateEditBlog.js"></script>
+}
+
+<h2>Create</h2>
+<form method="post" enctype="multipart/form-data">
+    @Html.ValidationSummary(false)
+    <div class="form-group">
+        <label for="BlogTitle">Blog Title</label>
+        @Html.LabelFor(p => p.Title, "Blog Title:")
+        @Html.TextBoxFor(p => p.Title, new { @class = "form-control", placeholder = "Blog Title" })
+
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Body, "Body")
+        @Html.TextAreaFor(p => p.Body, new { @class = "form-control", placeholder = "Body", rows = 5, columns = 5 })
+    </div>
+    <div class="form-group">
+        <input type="file" name="Media" />
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Published:</label>
+        <div class="row">
+            <div class="col-md-12">
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(p => p.Published, 1) True
+                </label>
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(p => p.Published, 0) Flase
+                </label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+</form>
