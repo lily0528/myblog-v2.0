@@ -43,8 +43,9 @@ namespace MyBlog.Controllers
                     Id = p.Id,
                     Title = p.Title,
                     Body = p.Body,
-
-                    Published = p.Published
+                    Published = p.Published,
+                    DateCreated = p.DateCreated,
+                    DateUpdated = p.DateUpdated
                 }).ToList();
             return View(model);
         }
@@ -198,6 +199,8 @@ namespace MyBlog.Controllers
             model.Body = blog.Body;
             model.pulished = blog.Published;
             model.MediaUrl = blog.MediaUrl;
+            model.DateCreated = blog.DateCreated;
+            model.DateUpdated = blog.DateUpdated;
             return View(model);
         }
 

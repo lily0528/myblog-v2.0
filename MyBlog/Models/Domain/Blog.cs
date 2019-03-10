@@ -25,5 +25,6 @@ namespace MyBlog.Models.Domain
         public DateTime DateUpdated { get; set; }
 
         public string MediaUrl { get; set; }
+  
     }
 }

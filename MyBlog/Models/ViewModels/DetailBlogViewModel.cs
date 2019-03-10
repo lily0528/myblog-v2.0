@@ -11,6 +11,7 @@ namespace MyBlog.Models.ViewModels
         public string Body { get; set; }
         public bool pulished { get; set; }
         public DateTime DateUpdated { get; set; }
+        public DateTime DateCreated { get; set; }
         public string MediaUrl { get; set; }
     }
 }
