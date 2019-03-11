@@ -20,9 +20,12 @@ namespace MyBlog.Controllers
         {
             DbContext = new ApplicationDbContext();
         }
+
+        [HttpGet]
         public ActionResult Index()
         {
-            return View();
+           return View();
+
         }
 
         [HttpGet]
@@ -34,7 +37,7 @@ namespace MyBlog.Controllers
         [HttpGet]
         public ActionResult BlogList()
         {
-            ViewBag.Message = "Your contact page.";
+            
             var userId = User.Identity.GetUserId();
             var model = DbContext.Blogs
                 .Where(p => p.UserId == userId)
@@ -48,6 +51,24 @@ namespace MyBlog.Controllers
                     DateUpdated = p.DateUpdated
                 }).ToList();
             return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult IndexList()
+        {
+            var userId = User.Identity.GetUserId();
+            var model1 = DbContext.Blogs
+                .Where(p => p.UserId == userId)
+                .Select(p => new IndexBlogViewModel
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Body = p.Body,
+                    Published = p.Published,
+                    DateCreated = p.DateCreated,
+                    DateUpdated = p.DateUpdated
+                }).ToList();
+            return View(model1);
         }
 
         [HttpGet]
@@ -89,7 +110,7 @@ namespace MyBlog.Controllers
             string fileExtension;
 
             //Validating file upload
-            if (formData.Media != null)
+            if (formData.Media != null || formData.MediaUrl != null)
             {
                 fileExtension = Path.GetExtension(formData.Media.FileName);
 
@@ -125,7 +146,7 @@ namespace MyBlog.Controllers
             blog.DateUpdated = DateTime.Now;
 
             //Handling file upload
-            if (formData.Media != null)
+            if (formData.Media != null || formData.MediaUrl != null)
             {
                 if (!Directory.Exists(Constants.MappedUploadFolder))
                 {
@@ -166,6 +187,7 @@ namespace MyBlog.Controllers
             model.Title = blog.Title;
             model.Body = blog.Body;
             model.Published = blog.Published;
+            model.MediaUrl = blog.MediaUrl;
             //need to modified
 
             model.DateUpdated = DateTime.Now;
@@ -225,5 +247,6 @@ namespace MyBlog.Controllers
 
             return RedirectToAction(nameof(BlogController.BlogList));
         }
+
     }
 }

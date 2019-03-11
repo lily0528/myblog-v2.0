@@ -6,57 +6,66 @@
 @section scripts {
     <script src="~/Scripts/BlogListDelete.js" type="text/javascript"></script>
 }
-    @if (!Model.Any())
-    {
-        <div>
-            <div><strong>No data</strong></div>
+
+<div class="container single-page">
+    <div class="row">
+        @if (!Model.Any())
+        {
+            <div>
+                <div><strong>No data</strong></div>
+            </div>
+        }
+        <div class="content-wrap">
+            <div><a class="btn btn-primary" href="@Url.Action("CreateBlog")">Create New</a></div>
+            <div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Body</th>
+                            <th>Published</th>
+                            <th>Date Created</th>
+                            <th>Date Updated</th>
+                            <th>MediaUrl</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var record in Model)
+                        {
+                            <tr>
+                                <td>@record.Id</td>
+                                <td>@record.Title</td>
+                                <td>@Html.Raw(record.Body)</td>
+                                <td>@record.Published</td>
+                                <td>@record.DateCreated</td>
+                                <td>@record.DateUpdated</td>
+                                <td>@record.MediaUrl</td>
+                                <td>
+                                    <a href="@Url.Action("Details", "Blog", new { id = record.Id })">Details</a>
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("Edit", "Blog", new { id = record.Id })">Edit</a>
+                                </td>
+
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <td>
+                                        <form method="post" action="@Url.Action("Delete", "Blog", new { id = record.Id })">
+                                            <a href="#" class="btn-delete">Delete</a>
+                                        </form>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
-    }
 
-    <a class="btn btn-primary" href="@Url.Action("CreateBlog")">Create New</a>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Body</th>
-                <th>Published</th>
-                <th>Date Created</th>
-                <th>Date Updated</th>
-                <th>MediaUrl</th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var record in Model)
-            {
-                <tr>
-                    <td>@record.Id</td>
-                    <td>@record.Title</td>
-                    <td>@record.Body</td>
-                    <td>@record.Published</td>
-                    <td>@record.DateCreated</td>
-                    <td>@record.DateUpdated</td>
-                    <td>@record.MediaUrl</td>
-                    <td>
-                        <a href="@Url.Action("Details", "Blog", new { id = record.Id })">Details</a>
-                    </td>
-                    <td>
-                        <a href="@Url.Action("Edit", "Blog", new { id = record.Id })">Edit</a>
-                    </td>
+    </div>
 
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <td>
-                            <form method="post" action="@Url.Action("Delete", "Blog", new { id = record.Id })">
-                                <a href="#" class="btn-delete">Delete</a>
-                            </form>
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
-
+</div>
