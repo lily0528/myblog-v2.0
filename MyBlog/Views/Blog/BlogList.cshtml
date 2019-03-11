@@ -9,13 +9,13 @@
 
 <div class="container single-page">
     <div class="row">
-        @if (!Model.Any())
-        {
-            <div>
-                <div><strong>No data</strong></div>
-            </div>
-        }
         <div class="content-wrap">
+            @if (!Model.Any())
+            {
+                <div>
+                    <div><strong>No data to be provied! Please check again!</strong></div>
+                </div>
+            }
             <div><a class="btn btn-primary" href="@Url.Action("CreateBlog")">Create New</a></div>
             <div>
                 <table class="table table-striped">
@@ -50,15 +50,11 @@
                                 <td>
                                     <a href="@Url.Action("Edit", "Blog", new { id = record.Id })">Edit</a>
                                 </td>
-
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <td>
-                                        <form method="post" action="@Url.Action("Delete", "Blog", new { id = record.Id })">
-                                            <a href="#" class="btn-delete">Delete</a>
-                                        </form>
-                                    </td>
-                                }
+                                <td>
+                                    <form method="post" action="@Url.Action("Delete", "Blog", new { id = record.Id })">
+                                        <a href="#" class="btn-delete">Delete</a>
+                                    </form>
+                                </td>
                             </tr>
                         }
                     </tbody>

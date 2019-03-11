@@ -28,13 +28,6 @@
                     <div class="row">
                         <div class="col-lg-6 flex align-items-center">
                             @Html.Partial("_LoginPartial")
-                            @*<div class="header-bar-text d-none d-lg-block">
-                                    <p>Hello world, My name is Blanca</p>
-                                </div><!-- .header-bar-text -->
-
-                                <div class="header-bar-email d-none d-lg-block">
-                                    <a href="#">Contactme@email.com</a>
-                                </div><!-- .header-bar-email -->*@
                         </div><!-- .col -->
 
                         <div class="col-12 col-lg-6 flex justify-content-between justify-content-lg-end align-items-center">
@@ -79,9 +72,11 @@
                                 <li class="current-menu-item"><a href="@Url.Action("Index","Home")">Home</a></li>
                                 <li><a href="@Url.Action("Register","Account")">Register</a></li>
                                 <li><a href="@Url.Action("login","Account")">Login in</a></li>
-                                <li><a href="@Url.Action("BlogList","Blog")">Blog</a></li>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li><a href="@Url.Action("BlogList", "Blog")">Blog</a></li>
+                                }
                                 <li><a href="@Url.Action("Contact","Home")">Contact</a></li>
-                                <li><a href="@Url.Action("IndexList","Home")">IndexList</a></li>
                             </ul>
 
                             <div class="header-bar-social d-md-none">
@@ -159,9 +154,9 @@
     </div>
     <div class="container single-page">
         <div class="row">
-            
-                @RenderBody()
-           
+
+            @RenderBody()
+
         </div><!-- .row -->
     </div><!-- .container -->
     @Scripts.Render("~/bundles/jquery")

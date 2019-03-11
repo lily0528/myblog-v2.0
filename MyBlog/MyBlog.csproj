@@ -435,7 +435,6 @@
     <Content Include="Scripts\tinymce\langs\readme.md" />
     <Content Include="Views\Blog\CreateBlog.cshtml" />
     <Content Include="Views\Blog\Details.cshtml" />
-    <Content Include="Views\Home\IndexList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

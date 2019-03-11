@@ -24,7 +24,7 @@ namespace MyBlog.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-           return View();
+            return View();
 
         }
 
@@ -37,7 +37,6 @@ namespace MyBlog.Controllers
         [HttpGet]
         public ActionResult BlogList()
         {
-            
             var userId = User.Identity.GetUserId();
             var model = DbContext.Blogs
                 .Where(p => p.UserId == userId)
@@ -91,10 +90,10 @@ namespace MyBlog.Controllers
 
         private ActionResult SaveBlog(int? id, CreateBlogViewModel formData)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return View();
-            //}
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             var userId = User.Identity.GetUserId();
 
             if (DbContext.Blogs.Any(p => p.UserId == userId &&
@@ -108,12 +107,9 @@ namespace MyBlog.Controllers
             }
 
             string fileExtension;
-
-            //Validating file upload
-            if (formData.Media != null || formData.MediaUrl != null)
+            if (formData.Media != null)
             {
                 fileExtension = Path.GetExtension(formData.Media.FileName);
-
                 if (!Constants.AllowedFileExtensions.Contains(fileExtension))
                 {
                     ModelState.AddModelError("", "File extension is not allowed.");
@@ -126,6 +122,7 @@ namespace MyBlog.Controllers
             {
                 blog = new Blog();
                 blog.UserId = userId;
+                blog.DateCreated = DateTime.Now;
                 DbContext.Blogs.Add(blog);
             }
             else
@@ -141,57 +138,48 @@ namespace MyBlog.Controllers
             blog.Title = formData.Title;
             blog.Body = formData.Body;
             blog.Published = formData.Published;
-            //need to modified
-            blog.DateCreated = DateTime.Now;
             blog.DateUpdated = DateTime.Now;
 
+
             //Handling file upload
-            if (formData.Media != null || formData.MediaUrl != null)
+            if (formData.Media != null)
             {
+                //Set Constants Model(MyBlog.Models.Constants) 
                 if (!Directory.Exists(Constants.MappedUploadFolder))
                 {
                     Directory.CreateDirectory(Constants.MappedUploadFolder);
                 }
-
                 var fileName = formData.Media.FileName;
                 var fullPathWithName = Constants.MappedUploadFolder + fileName;
 
                 formData.Media.SaveAs(fullPathWithName);
-
                 blog.MediaUrl = Constants.UploadFolder + fileName;
             }
-
             DbContext.SaveChanges();
             return RedirectToAction(nameof(BlogController.BlogList));
         }
 
         [HttpGet]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            //if (!id.HasValue)
-            //{
-            //    return RedirectToAction(nameof(BlogController.BlogList));
-            //}
-
+            if (!id.HasValue)
+            {
+                return RedirectToAction(nameof(BlogController.BlogList));
+            }
             var userId = User.Identity.GetUserId();
 
             var blog = DbContext.Blogs.FirstOrDefault(
                 p => p.Id == id && p.UserId == userId);
-
             if (blog == null)
             {
                 return RedirectToAction(nameof(BlogController.Index));
             }
-
             var model = new CreateBlogViewModel();
             model.Title = blog.Title;
             model.Body = blog.Body;
             model.Published = blog.Published;
             model.MediaUrl = blog.MediaUrl;
-            //need to modified
-
             model.DateUpdated = DateTime.Now;
-
             return View(model);
         }
 
@@ -208,7 +196,6 @@ namespace MyBlog.Controllers
                 return RedirectToAction(nameof(BlogController.BlogList));
 
             var userId = User.Identity.GetUserId();
-
             var blog = DbContext.Blogs.FirstOrDefault(p =>
             p.Id == id.Value &&
             p.UserId == userId);
@@ -227,7 +214,7 @@ namespace MyBlog.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //if need to identify user role,could use [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (!id.HasValue)

@@ -4,7 +4,6 @@
     ViewBag.Title = "Details";
 }
 
-
 <div class="col-12 col-lg-9">
     <div class="content-wrap">
         <header class="entry-header">
@@ -17,7 +16,9 @@
                     <a href="#">@User.Identity.GetUserName()</a>
                 }
                 <span><strong> ◕ </strong> </span>
+            @if (Model.DateUpdated != null) { 
                 <a href="#">@Model.DateUpdated.Date.ToString("MMMM dd yyyy")</a>
+            }
             </div><!-- .tags-links -->
         </header><!-- .entry-header -->
 
@@ -46,7 +47,6 @@
             </div><!-- .comments-count -->
         </footer><!-- .entry-footer -->
     </div><!-- .content-wrap -->
-
 
     <div class="pagination">
         <ul class="flex align-items-center">
@@ -79,9 +79,6 @@
         </div>
     </div><!-- .sidebar -->
 </div><!-- .col -->
-@*</div>*@<!-- .row -->
-@*</div>*@<!-- .container -->
-@*</div>*@<!-- .outer-container -->
 
 <script type='text/javascript' src='~/js/jquery.js'></script>
 <script type='text/javascript' src='~/js/swiper.min.js'></script>
