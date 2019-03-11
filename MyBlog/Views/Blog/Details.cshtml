@@ -1,16 +1,88 @@
 ﻿@model DetailBlogViewModel
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Details";
 }
 
-<p>@Model.Title</p>
-<p>@Model.pulished</p>
-<p>@Model.DateUpdated</p>
-<p>@Html.Raw(Model.Body)</p>
 
-<div class="row">
-    <div class="col-md-2">
-        <img class="img-responsive" src="@Url.Content(Model.MediaUrl)" />
+<div class="col-12 col-lg-9">
+    <div class="content-wrap">
+        <header class="entry-header">
+            <h2 class="entry-title">@Model.Title</h2>
+
+            <div class="tags-links">
+                @if (Request.IsAuthenticated)
+                {
+                    <span><strong> ͡° ͜ʖ ͡°  </strong></span>
+                    <a href="#">@User.Identity.GetUserName()</a>
+                }
+                <span><strong> ◕ </strong> </span>
+                <a href="#">@Model.DateUpdated.Date.ToString("MMMM dd yyyy")</a>
+            </div><!-- .tags-links -->
+        </header><!-- .entry-header -->
+
+        <figure class="featured-image">
+            <img src="@Url.Content(Model.MediaUrl)" alt="">
+        </figure><!-- .featured-image -->
+
+        <div class="entry-content">
+            <p>@Html.Raw(Model.Body)</p>
+        </div><!-- .entry-content -->
+
+        <footer class="entry-footer flex flex-column flex-lg-row justify-content-between align-content-start align-lg-items-center">
+            <ul class="post-share flex align-items-center order-3 order-lg-1">
+                <label>Share</label>
+                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+            </ul><!-- .post-share -->
+
+            <a class="read-more order-2" href="javascript:window.opener=null;window.open('','_self');window.close();">Close</a>
+
+            <div class="comments-count order-1 order-lg-3">
+                <a href="#">2 Comments</a>
+            </div><!-- .comments-count -->
+        </footer><!-- .entry-footer -->
+    </div><!-- .content-wrap -->
+
+
+    <div class="pagination">
+        <ul class="flex align-items-center">
+            <li class="active"><a href="#">01.</a></li>
+            <li><a href="#">02.</a></li>
+            <li><a href="#">03.</a></li>
+        </ul>
     </div>
-</div>
+</div><!-- .col -->
 
+<div class="col-12 col-lg-3">
+    <div class="sidebar">
+        <div class="about-me">
+            <h2>I’m Lily Li</h2>
+
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel tortor facilisis, volutpat nulla placerat, tincidunt mi. Nullam vel orci dui. Suspendisse sit amet laoreet neque. Fusce sagittis suscipit sem a consequat. Proin nec interdum sem. Quisque in porttitor magna.</p>
+        </div><!-- .about-me -->
+        <div class="tags-list">
+            <a href="#">Music</a>
+            <a href="#">Love</a>
+            <a href="#">Car</a>
+            <a href="#">Stories</a>
+            <a href="#">Photography</a>
+            <a href="#">Music</a>
+            <a href="#">Car</a>
+        </div><!-- .tags-list -->
+
+        <div class="sidebar-ads">
+            <img src="~/images/ads.jpg" alt="ads">
+        </div>
+    </div><!-- .sidebar -->
+</div><!-- .col -->
+@*</div>*@<!-- .row -->
+@*</div>*@<!-- .container -->
+@*</div>*@<!-- .outer-container -->
+
+<script type='text/javascript' src='~/js/jquery.js'></script>
+<script type='text/javascript' src='~/js/swiper.min.js'></script>
+<script type='text/javascript' src='~/js/custom.js'></script>

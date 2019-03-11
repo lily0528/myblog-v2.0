@@ -19,16 +19,6 @@ namespace MyBlog.Migrations
 
         protected override void Seed(MyBlog.Models.ApplicationDbContext context)
         {
-
-            var blog = new Blog();
-            blog.Title = "Daystest";
-            blog.Body = "it is nice day";
-            blog.Published = true;
-            blog.DateCreated = DateTime.Now;
-            blog.DateUpdated = DateTime.Now;
-            context.Blogs.AddOrUpdate(p => p.Title, blog);
-            context.SaveChanges();
-
             var roleManager =
                 new RoleManager<IdentityRole>(
                     new RoleStore<IdentityRole>(context));
@@ -69,6 +59,62 @@ namespace MyBlog.Migrations
             {
                 userManager.AddToRole(adminUser.Id, "Admin");
             }
+
+            //Adding Moderator role if it doesn't exist.
+            if (!context.Roles.Any(p => p.Name == "Moderator"))
+            {
+                var ModeratorRole = new IdentityRole("Moderator");
+                roleManager.Create(ModeratorRole);
+            }
+
+            //Creating the user
+            ApplicationUser userModerator;
+
+            if (!context.Users.Any(
+                p => p.UserName == "moderator@blog.com"))
+            {
+                userModerator = new ApplicationUser();
+                userModerator.UserName = "moderator@blog.com";
+                userModerator.Email = "moderator@blog.com";
+
+                userManager.Create(userModerator, "Password-1");
+            }
+            else
+            {
+                userModerator = context
+                    .Users
+                    .First(p => p.UserName == "moderator@blog.com");
+            }
+
+            //Make sure the user is on the Moderator role
+            if (!userManager.IsInRole(userModerator.Id, "Moderator"))
+            {
+                userManager.AddToRole(userModerator.Id, "Moderator");
+            }
+
+            var blog = new Blog();
+            blog.Title = "Why I love Spring: A short story";
+            blog.Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel tortor facilisis, volutpat nulla placerat, tincidunt mi. Nullam vel orci dui. Suspendisse sit amet laoreet neque. Fusce sagittis suscipit sem a consequat. Proin nec interdum sem. Quisque in porttitor magna, a imperdiet est.";
+            blog.Published = true;
+            blog.DateCreated = DateTime.Now;
+            blog.DateUpdated = DateTime.Now;
+            blog.MediaUrl = "~/Upload/1.png";
+            blog.UserId = userModerator.Id;
+
+            context.Blogs.AddOrUpdate(p => p.Title, blog);
+            context.SaveChanges();
+
+            var blogitem2 = new Blog();
+            blogitem2.Title = "Why I love Spring: A short story";
+            blogitem2.Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel tortor facilisis, volutpat nulla placerat, tincidunt mi. Nullam vel orci dui. Suspendisse sit amet laoreet neque. Fusce sagittis suscipit sem a consequat. Proin nec interdum sem. Quisque in porttitor magna, a imperdiet est.";
+            blogitem2.Published = true;
+            blogitem2.DateCreated = DateTime.Now;
+            blogitem2.DateUpdated = DateTime.Now;
+            blogitem2.MediaUrl = "~/Upload/2.png";
+            blogitem2.UserId = userModerator.Id;
+
+            context.Blogs.AddOrUpdate(p => p.Title, blogitem2);
+            context.SaveChanges();
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
