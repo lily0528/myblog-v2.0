@@ -20,9 +20,9 @@ namespace MyBlog.Controllers
         }
         public ActionResult Index()
         {
-            var userId = User.Identity.GetUserId();
+            //var userId = User.Identity.GetUserId();
             var model = DbContext.Blogs
-                .Where(p => p.UserId == userId)
+                //.Where(p => p.UserId == userId)
                 .Select(p => new HomeBlogViewModel
                 {
                     Id = p.Id,

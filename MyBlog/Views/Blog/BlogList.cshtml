@@ -45,10 +45,10 @@
                                 <td>@record.DateUpdated</td>
                                 <td>@record.MediaUrl</td>
                                 <td>
-                                    <a href="@Url.Action("Details", "Blog", new { id = record.Id })">Details</a>
+                                    <a target="_blank" href="@Url.Action("Details", "Blog", new { id = record.Id })">Details</a>
                                 </td>
                                 <td>
-                                    <a href="@Url.Action("Edit", "Blog", new { id = record.Id })">Edit</a>
+                                    <a target="_blank" href="@Url.Action("Edit", "Blog", new { id = record.Id })">Edit</a>
                                 </td>
                                 <td>
                                     <form method="post" action="@Url.Action("Delete", "Blog", new { id = record.Id })">

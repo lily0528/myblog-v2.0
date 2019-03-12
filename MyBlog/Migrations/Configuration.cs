@@ -99,21 +99,33 @@ namespace MyBlog.Migrations
             blog.DateCreated = DateTime.Now;
             blog.DateUpdated = DateTime.Now;
             blog.MediaUrl = "~/Upload/1.png";
-            blog.UserId = userModerator.Id;
+            blog.UserId = adminUser.Id;
 
             context.Blogs.AddOrUpdate(p => p.Title, blog);
             context.SaveChanges();
 
             var blogitem2 = new Blog();
-            blogitem2.Title = "Why I love Spring: A short story";
+            blogitem2.Title = "Why I love Summer: A short story";
             blogitem2.Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel tortor facilisis, volutpat nulla placerat, tincidunt mi. Nullam vel orci dui. Suspendisse sit amet laoreet neque. Fusce sagittis suscipit sem a consequat. Proin nec interdum sem. Quisque in porttitor magna, a imperdiet est.";
             blogitem2.Published = true;
             blogitem2.DateCreated = DateTime.Now;
             blogitem2.DateUpdated = DateTime.Now;
-            blogitem2.MediaUrl = "~/Upload/2.png";
-            blogitem2.UserId = userModerator.Id;
+            blogitem2.MediaUrl = "~/Upload/2.jpg";
+            blogitem2.UserId = adminUser.Id;
 
             context.Blogs.AddOrUpdate(p => p.Title, blogitem2);
+            context.SaveChanges();
+
+            var blogitem3 = new Blog();
+            blogitem3.Title = "Why I love Fall: A short story";
+            blogitem3.Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel tortor facilisis, volutpat nulla placerat, tincidunt mi. Nullam vel orci dui. Suspendisse sit amet laoreet neque. Fusce sagittis suscipit sem a consequat. Proin nec interdum sem. Quisque in porttitor magna, a imperdiet est.";
+            blogitem3.Published = true;
+            blogitem3.DateCreated = DateTime.Now;
+            blogitem3.DateUpdated = DateTime.Now;
+            blogitem3.MediaUrl = "~/Upload/3.jpg";
+            blogitem3.UserId = adminUser.Id;
+
+            context.Blogs.AddOrUpdate(p => p.Title, blogitem3);
             context.SaveChanges();
             //  This method will be called after migrating to the latest version.
 

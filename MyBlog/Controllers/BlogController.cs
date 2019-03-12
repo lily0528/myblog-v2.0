@@ -52,23 +52,6 @@ namespace MyBlog.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public ActionResult IndexList()
-        {
-            var userId = User.Identity.GetUserId();
-            var model1 = DbContext.Blogs
-                .Where(p => p.UserId == userId)
-                .Select(p => new IndexBlogViewModel
-                {
-                    Id = p.Id,
-                    Title = p.Title,
-                    Body = p.Body,
-                    Published = p.Published,
-                    DateCreated = p.DateCreated,
-                    DateUpdated = p.DateUpdated
-                }).ToList();
-            return View(model1);
-        }
 
         [HttpGet]
         public ActionResult Contact()
@@ -195,10 +178,12 @@ namespace MyBlog.Controllers
             if (!id.HasValue)
                 return RedirectToAction(nameof(BlogController.BlogList));
 
-            var userId = User.Identity.GetUserId();
+            //var userId = User.Identity.GetUserId();
             var blog = DbContext.Blogs.FirstOrDefault(p =>
-            p.Id == id.Value &&
-            p.UserId == userId);
+               p.Id == id.Value);
+            //var blog = DbContext.Blogs.FirstOrDefault(p =>
+            //p.Id == id.Value &&
+            //p.UserId == userId);
 
             if (blog == null)
                 return RedirectToAction(nameof(BlogController.BlogList));
