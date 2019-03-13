@@ -48,7 +48,7 @@
                                     <a target="_blank" href="@Url.Action("Details", "Blog", new { id = record.Id })">Details</a>
                                 </td>
                                 <td>
-                                    <a target="_blank" href="@Url.Action("Edit", "Blog", new { id = record.Id })">Edit</a>
+                                    <a href="@Url.Action("Edit", "Blog", new { id = record.Id })">Edit</a>
                                 </td>
                                 <td>
                                     <form method="post" action="@Url.Action("Delete", "Blog", new { id = record.Id })">
@@ -61,7 +61,5 @@
                 </table>
             </div>
         </div>
-
     </div>
-
 </div>

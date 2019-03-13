@@ -2,9 +2,9 @@
 @font-face {
     font-family: 'HelveticaNeueLTPro-Md';
     src: url('fonts/HelveticaNeueLTPro-Md.eot?#iefix') format('embedded-opentype'),
-    url('fonts/HelveticaNeueLTPro-Md.otf')  format('opentype'),
-    url('fonts/HelveticaNeueLTPro-Md.woff') format('woff'),
-    url('fonts/HelveticaNeueLTPro-Md.ttf')  format('truetype'),
+    /*url('fonts/HelveticaNeueLTPro-Md.otf')  format('opentype'),*/
+    /*url('fonts/HelveticaNeueLTPro-Md.woff') format('woff'),*/
+    /*url('fonts/HelveticaNeueLTPro-Md.ttf')  format('truetype'),*/
     url('fonts/HelveticaNeueLTPro-Md.svg#HelveticaNeueLTPro-Md') format('svg');
     font-weight: normal;
     font-style: normal;
@@ -13,9 +13,9 @@
 @font-face {
     font-family: 'BeyondTheMountains';
     src: url('fonts/BeyondTheMountains.eot?#iefix') format('embedded-opentype'),
-    url('fonts/BeyondTheMountains.otf')  format('opentype'),
-    url('fonts/BeyondTheMountains.woff') format('woff'),
-    url('fonts/BeyondTheMountains.ttf')  format('truetype'),
+    /*url('fonts/BeyondTheMountains.otf')  format('opentype'),*/
+    /*url('fonts/BeyondTheMountains.woff') format('woff'),*/
+    /*url('fonts/BeyondTheMountains.ttf')  format('truetype'),*/
     url('fonts/BeyondTheMountains.svg#BeyondTheMountains') format('svg');
     font-weight: normal;
     font-style: normal;

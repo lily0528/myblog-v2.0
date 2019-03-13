@@ -47,7 +47,8 @@ namespace MyBlog.Controllers
                     Body = p.Body,
                     Published = p.Published,
                     DateCreated = p.DateCreated,
-                    DateUpdated = p.DateUpdated
+                    DateUpdated = p.DateUpdated,
+                    MediaUrl = p.MediaUrl
                 }).ToList();
             return View(model);
         }
