@@ -28,6 +28,7 @@ namespace MyBlog.Models.ViewModels
         public HttpPostedFileBase Media { get; set; }
 
         public string MediaUrl { get; set; }
+        public string Slug { get; set; }
 
         //public CreateBlogViewModel()
         //{

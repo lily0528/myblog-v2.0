@@ -31,31 +31,36 @@
                             <th></th>
                             <th></th>
                             <th></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var record in Model)
                         {
-                            <tr>
-                                <td>@record.Id</td>
-                                <td>@record.Title</td>
-                                <td>@Html.Raw(record.Body)</td>
-                                <td>@record.Published</td>
-                                <td>@record.DateCreated</td>
-                                <td>@record.DateUpdated</td>
-                                <td>@record.MediaUrl</td>
-                                <td>
-                                    <a target="_blank" href="@Url.Action("Details", "Blog", new { id = record.Id })">Details</a>
-                                </td>
-                                <td>
-                                    <a href="@Url.Action("Edit", "Blog", new { id = record.Id })">Edit</a>
-                                </td>
-                                <td>
-                                    <form method="post" action="@Url.Action("Delete", "Blog", new { id = record.Id })">
-                                        <a href="#" class="btn-delete">Delete</a>
-                                    </form>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>@record.Id</td>
+                            <td>@record.Title</td>
+                            <td>@Html.Raw(record.Body)</td>
+                            <td>@record.Published</td>
+                            <td>@record.DateCreated</td>
+                            <td>@record.DateUpdated</td>
+                            <td>@record.MediaUrl</td>
+                            <td>
+                                <a target="_blank" href="@Url.Action("DetailsByName", "Blog", new { Slug = record.Slug })">newDetails</a>
+                            </td>
+                            <td>
+                                <a target="_blank" href="@Url.Action("Details", "Blog", new { id = record.Id })">Details</a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Edit", "Blog", new { id = record.Id })">Edit</a>
+                            </td>
+                            <td>
+                                <form method="post" action="@Url.Action("Delete", "Blog", new { id = record.Id })">
+                                    <a href="#" class="btn-delete">Delete</a>
+                                </form>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>

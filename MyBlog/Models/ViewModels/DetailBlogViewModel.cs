@@ -13,5 +13,6 @@ namespace MyBlog.Models.ViewModels
         public DateTime DateUpdated { get; set; }
         public DateTime DateCreated { get; set; }
         public string MediaUrl { get; set; }
+        public string Slug { get; set; }
     }
 }

@@ -14,7 +14,9 @@ namespace MyBlog.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-         
+            AutomaticMigrationDataLossAllowed = true;
+
+
         }
 
         protected override void Seed(MyBlog.Models.ApplicationDbContext context)
@@ -99,18 +101,20 @@ namespace MyBlog.Migrations
             blog.DateCreated = DateTime.Now;
             blog.DateUpdated = DateTime.Now;
             blog.MediaUrl = "~/Upload/1.png";
+            blog.Slug = "Why-I-love-spring:-a-short-story";
             blog.UserId = adminUser.Id;
 
             context.Blogs.AddOrUpdate(p => p.Title, blog);
             context.SaveChanges();
 
             var blogitem2 = new Blog();
-            blogitem2.Title = "Why I love Summer: A short story";
+            blogitem2.Title = "Why I love Summer: A short story1";
             blogitem2.Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel tortor facilisis, volutpat nulla placerat, tincidunt mi. Nullam vel orci dui. Suspendisse sit amet laoreet neque. Fusce sagittis suscipit sem a consequat. Proin nec interdum sem. Quisque in porttitor magna, a imperdiet est.";
             blogitem2.Published = true;
             blogitem2.DateCreated = DateTime.Now;
             blogitem2.DateUpdated = DateTime.Now;
             blogitem2.MediaUrl = "~/Upload/2.jpg";
+            blogitem2.Slug = "Why-i-love-summer:-a-short-story01";
             blogitem2.UserId = adminUser.Id;
 
             context.Blogs.AddOrUpdate(p => p.Title, blogitem2);
@@ -123,6 +127,7 @@ namespace MyBlog.Migrations
             blogitem3.DateCreated = DateTime.Now;
             blogitem3.DateUpdated = DateTime.Now;
             blogitem3.MediaUrl = "~/Upload/3.jpg";
+            blogitem3.Slug = "Why-i-love-fall:-a-short-story03";
             blogitem3.UserId = adminUser.Id;
 
             context.Blogs.AddOrUpdate(p => p.Title, blogitem3);

@@ -6,8 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+
 using Constants = MyBlog.Models.Constants;
 
 namespace MyBlog.Controllers
@@ -25,7 +28,6 @@ namespace MyBlog.Controllers
         public ActionResult Index()
         {
             return View();
-
         }
 
         [HttpGet]
@@ -35,6 +37,7 @@ namespace MyBlog.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult BlogList()
         {
             var userId = User.Identity.GetUserId();
@@ -48,11 +51,11 @@ namespace MyBlog.Controllers
                     Published = p.Published,
                     DateCreated = p.DateCreated,
                     DateUpdated = p.DateUpdated,
-                    MediaUrl = p.MediaUrl
+                    MediaUrl = p.MediaUrl,
+                    Slug = p.Slug
                 }).ToList();
             return View(model);
         }
-
 
         [HttpGet]
         public ActionResult Contact()
@@ -72,6 +75,7 @@ namespace MyBlog.Controllers
             return SaveBlog(null, formData);
         }
 
+
         private ActionResult SaveBlog(int? id, CreateBlogViewModel formData)
         {
             if (!ModelState.IsValid)
@@ -80,15 +84,10 @@ namespace MyBlog.Controllers
             }
             var userId = User.Identity.GetUserId();
 
-            if (DbContext.Blogs.Any(p => p.UserId == userId &&
-            p.Title == formData.Title &&
-            (!id.HasValue || p.Id != id.Value)))
-            {
-                ModelState.AddModelError(nameof(CreateBlogViewModel.Title),
-                    "Blog Title should be unique");
+            //Slug save
+            var Slug = formData.Title;
 
-                return RedirectToAction(nameof(BlogController.CreateBlog));
-            }
+            Slug = SlugFriendly(Slug);
 
             string fileExtension;
             if (formData.Media != null)
@@ -103,6 +102,7 @@ namespace MyBlog.Controllers
 
             Blog blog;
             if (!id.HasValue)
+
             {
                 blog = new Blog();
                 blog.UserId = userId;
@@ -118,7 +118,7 @@ namespace MyBlog.Controllers
                     return RedirectToAction(nameof(BlogController.BlogList));
                 }
             }
-
+            blog.Slug = Slug;
             blog.Title = formData.Title;
             blog.Body = formData.Body;
             blog.Published = formData.Published;
@@ -142,6 +142,8 @@ namespace MyBlog.Controllers
             DbContext.SaveChanges();
             return RedirectToAction(nameof(BlogController.BlogList));
         }
+
+
 
         [HttpGet]
         public ActionResult Edit(int? id)
@@ -168,12 +170,46 @@ namespace MyBlog.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, CreateBlogViewModel formData)
+        public ActionResult Edit(string Title, CreateBlogViewModel formData)
         {
-            return SaveBlog(id, formData);
+            if (Title == null)
+            {
+                return RedirectToAction(nameof(BlogController.BlogList));
+            }
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            return SaveBlog(null, formData);
         }
 
         [HttpGet]
+        [Route("Myblog/{slug}")]
+        public ActionResult DetailsByName(string Slug)
+        {
+            if (Slug == null)
+                return RedirectToAction(nameof(BlogController.BlogList));
+
+            //var userId = User.Identity.GetUserId();
+            var blog = DbContext.Blogs.FirstOrDefault(p =>
+               p.Slug == Slug);
+            //var blog = DbContext.Blogs.FirstOrDefault(p =>
+            //p.Id == id.Value &&
+            //p.UserId == userId);
+
+            if (blog == null)
+                return RedirectToAction(nameof(BlogController.BlogList));
+
+            var model = new DetailBlogViewModel();
+            model.Title = blog.Title;
+            model.Body = blog.Body;
+            model.pulished = blog.Published;
+            model.MediaUrl = blog.MediaUrl;
+            model.DateCreated = blog.DateCreated;
+            model.DateUpdated = blog.DateUpdated;
+            return View("Details", model);
+        }
+
         public ActionResult Details(int? id)
         {
             if (!id.HasValue)
@@ -201,6 +237,7 @@ namespace MyBlog.Controllers
 
         [HttpPost]
         //if need to identify user role,could use [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (!id.HasValue)
@@ -221,5 +258,20 @@ namespace MyBlog.Controllers
             return RedirectToAction(nameof(BlogController.BlogList));
         }
 
+        private string SlugFriendly(string Slug)
+        {
+            string str = Slug.ToLower();
+            str = Regex.Replace(str, @"[^a-z0-9\s-]", "");
+            str = Regex.Replace(str, @"[\s-]+", " ").Trim();
+            str = str.Substring(0, str.Length <= 100 ? str.Length : 100).Trim();
+            str = Regex.Replace(str, @"\s", "-");
+           
+            if (DbContext.Blogs.Any(p => p.Slug == str))
+            {
+                Random rand = new Random();
+                str = (str + rand.Next(1, 1000)).ToString();
+            }
+            return str;
+        }
     }
 }

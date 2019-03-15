@@ -175,6 +175,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BlogController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -184,9 +185,11 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Domain\Blog.cs" />
+    <Compile Include="Models\Domain\Comment.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\CreateBlogViewModel.cs" />
+    <Compile Include="Models\ViewModels\CreateCommentViewModel.cs" />
     <Compile Include="Models\ViewModels\DetailBlogViewModel.cs" />
     <Compile Include="Models\ViewModels\HomeBlogViewModel.cs" />
     <Compile Include="Models\ViewModels\IndexBlogViewModel.cs" />
@@ -194,6 +197,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\MyBlog.dll" />
+    <Content Include="bin\MyBlog.pdb" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -392,6 +397,10 @@
     <Content Include="Scripts\tinymce\themes\silver\theme.min.js" />
     <Content Include="Scripts\tinymce\tinymce.js" />
     <Content Include="Scripts\tinymce\tinymce.min.js" />
+    <Content Include="Upload\1.png" />
+    <Content Include="Upload\2.jpg" />
+    <Content Include="Upload\3.JPG" />
+    <Content Include="Upload\4.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -432,9 +441,13 @@
     <Content Include="Scripts\tinymce\langs\readme.md" />
     <Content Include="Views\Blog\CreateBlog.cshtml" />
     <Content Include="Views\Blog\Details.cshtml" />
+    <Content Include="Views\Comment\CommentList.cshtml" />
+    <Content Include="Views\Comment\CreateComment.cshtml" />
+    <Content Include="Views\Comment\CommentDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\CreatCommentView\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

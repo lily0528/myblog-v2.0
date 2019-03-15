@@ -12,6 +12,13 @@ namespace MyBlog
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            ////need add  [Route("myblog/{namd}")] on the top of function in control
+         routes.MapMvcAttributeRoutes();
+           // routes.MapRoute(
+           //    name: "NewSlug",
+           //    url: "{controller}/slug",
+           //    defaults: new { controller = "Blog", action = "details", id = UrlParameter.Optional }
+           //);
 
             routes.MapRoute(
                 name: "Default",

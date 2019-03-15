@@ -20,10 +20,27 @@ namespace MyBlog.Controllers
         }
         public ActionResult Index()
         {
-            //var userId = User.Identity.GetUserId();
-            var model = DbContext.Blogs
-                //.Where(p => p.UserId == userId)
+            if (!User.IsInRole("Admin")) { 
+                var model = DbContext.Blogs
+                .Where(p => p.Published == true)
                 .Select(p => new HomeBlogViewModel
+                {
+
+                    Id = p.Id,
+                    Title = p.Title,
+                    Body = p.Body,
+                    Published = p.Published,
+                    MediaUrl = p.MediaUrl,
+                    DateCreated = p.DateCreated,
+                    DateUpdated = p.DateUpdated,
+                    Slug = p.Slug
+                }).ToList();
+                return View(model);
+            }
+            else
+            {
+                var model = DbContext.Blogs
+                 .Select(p => new HomeBlogViewModel
                 {
                     Id = p.Id,
                     Title = p.Title,
@@ -31,10 +48,12 @@ namespace MyBlog.Controllers
                     Published = p.Published,
                     MediaUrl = p.MediaUrl,
                     DateCreated = p.DateCreated,
-                    DateUpdated = p.DateUpdated
+                    DateUpdated = p.DateUpdated,
+                    Slug = p.Slug
                 }).ToList();
-            return View(model);
-            //return View();
+                return View(model);
+            }
+
         }
 
         public ActionResult About()
