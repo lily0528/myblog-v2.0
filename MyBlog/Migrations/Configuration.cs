@@ -101,7 +101,7 @@ namespace MyBlog.Migrations
             blog.DateCreated = DateTime.Now;
             blog.DateUpdated = DateTime.Now;
             blog.MediaUrl = "~/Upload/1.png";
-            blog.Slug = "Why-I-love-spring:-a-short-story";
+            blog.Slug = "kk";
             blog.UserId = adminUser.Id;
 
             context.Blogs.AddOrUpdate(p => p.Title, blog);
@@ -114,7 +114,7 @@ namespace MyBlog.Migrations
             blogitem2.DateCreated = DateTime.Now;
             blogitem2.DateUpdated = DateTime.Now;
             blogitem2.MediaUrl = "~/Upload/2.jpg";
-            blogitem2.Slug = "Why-i-love-summer:-a-short-story01";
+            blogitem2.Slug = "kk01";
             blogitem2.UserId = adminUser.Id;
 
             context.Blogs.AddOrUpdate(p => p.Title, blogitem2);
@@ -127,7 +127,7 @@ namespace MyBlog.Migrations
             blogitem3.DateCreated = DateTime.Now;
             blogitem3.DateUpdated = DateTime.Now;
             blogitem3.MediaUrl = "~/Upload/3.jpg";
-            blogitem3.Slug = "Why-i-love-fall:-a-short-story03";
+            blogitem3.Slug = "kk03";
             blogitem3.UserId = adminUser.Id;
 
             context.Blogs.AddOrUpdate(p => p.Title, blogitem3);

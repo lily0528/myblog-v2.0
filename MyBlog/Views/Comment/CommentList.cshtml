@@ -1,7 +1,22 @@
-﻿
+﻿@model ListCommentViewModel
 @{
     ViewBag.Title = "CommentList";
+    Layout = null;
 }
 
+
 <h2>CommentList</h2>
+<div class="col-12 col-lg-9">
+    <div><h2>@Model.Title</h2></div>
+    <div><h2>@Model.Slug</h2></div>
+    @foreach (var record in Model.Comments)
+    {
+        <div class="content-wrap">
+            <header class="entry-header">
+                <h2 class="entry-title">@record.Body</h2>
+            </header><!-- .entry-header -->
+        </div><!-- .content-wrap -->
+    }
+</div>
+
 

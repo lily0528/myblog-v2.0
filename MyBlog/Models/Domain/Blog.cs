@@ -26,6 +26,8 @@ namespace MyBlog.Models.Domain
 
         public string MediaUrl { get; set; }
         public string Slug { get; set; }
-  
+
+        public virtual ICollection<Comment> Comments { get; set; }
+
     }
 }

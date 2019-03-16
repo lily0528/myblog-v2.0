@@ -20,9 +20,9 @@ namespace MyBlog.Controllers
         }
         public ActionResult Index()
         {
-            if (!User.IsInRole("Admin")) { 
+            var isAdmin = User.IsInRole("Admin");
                 var model = DbContext.Blogs
-                .Where(p => p.Published == true)
+                .Where(p => isAdmin ? true : p.Published)
                 .Select(p => new HomeBlogViewModel
                 {
 
@@ -36,25 +36,8 @@ namespace MyBlog.Controllers
                     Slug = p.Slug
                 }).ToList();
                 return View(model);
-            }
-            else
-            {
-                var model = DbContext.Blogs
-                 .Select(p => new HomeBlogViewModel
-                {
-                    Id = p.Id,
-                    Title = p.Title,
-                    Body = p.Body,
-                    Published = p.Published,
-                    MediaUrl = p.MediaUrl,
-                    DateCreated = p.DateCreated,
-                    DateUpdated = p.DateUpdated,
-                    Slug = p.Slug
-                }).ToList();
-                return View(model);
-            }
-
         }
+
 
         public ActionResult About()
         {

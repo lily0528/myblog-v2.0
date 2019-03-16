@@ -75,7 +75,6 @@ namespace MyBlog.Controllers
             return SaveBlog(null, formData);
         }
 
-
         private ActionResult SaveBlog(int? id, CreateBlogViewModel formData)
         {
             if (!ModelState.IsValid)
@@ -84,9 +83,8 @@ namespace MyBlog.Controllers
             }
             var userId = User.Identity.GetUserId();
 
-            //Slug save
+            //Slug verify
             var Slug = formData.Title;
-
             Slug = SlugFriendly(Slug);
 
             string fileExtension;
@@ -144,7 +142,6 @@ namespace MyBlog.Controllers
         }
 
 
-
         [HttpGet]
         public ActionResult Edit(int? id)
         {
@@ -200,14 +197,19 @@ namespace MyBlog.Controllers
             if (blog == null)
                 return RedirectToAction(nameof(BlogController.BlogList));
 
+
+
             var model = new DetailBlogViewModel();
+            model.Slug = blog.Slug;
             model.Title = blog.Title;
             model.Body = blog.Body;
             model.pulished = blog.Published;
             model.MediaUrl = blog.MediaUrl;
             model.DateCreated = blog.DateCreated;
             model.DateUpdated = blog.DateUpdated;
+            /*return RedirectToAction("CommentList", "CommentController", new { slug = blog.Slug })*/;
             return View("Details", model);
+            //return View("Details", model);
         }
 
         public ActionResult Details(int? id)

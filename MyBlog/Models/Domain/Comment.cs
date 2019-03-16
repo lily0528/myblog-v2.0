@@ -12,6 +12,7 @@ namespace MyBlog.Models.Domain
         public virtual Blog Blog { get; set; }
 
         public string UserId { get; set; }
+        public int BlogId { get; set; }
 
         public int Id { get; set; }
      

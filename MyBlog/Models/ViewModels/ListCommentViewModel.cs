@@ -6,10 +6,10 @@ using System.Web;
 
 namespace MyBlog.Models.ViewModels
 {
-    public class CreateCommentViewModel
+    public class ListCommentViewModel
     {
         public string Slug { get; set; }
         public string Title { get; set; }
-        //public List<Comment> Comments { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }
