@@ -39,6 +39,7 @@ namespace MyBlog.Models
 
 
         public static ApplicationDbContext Create()
+
         {
             return new ApplicationDbContext();
         }

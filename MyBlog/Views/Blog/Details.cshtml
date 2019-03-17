@@ -31,8 +31,9 @@
             <p>@Html.Raw(Model.Body)</p>
         </div><!-- .entry-content -->
         @Html.Action("CommentList", "Comment", new { slug = Model.Slug })
-        @*@Html.Action("CreatComment", "Comment", new { slug = Model.Slug })*@
+        @Html.Action("CreateComment", "Comment", new { slug = Model.Slug })
         @*@Html.Partial("~/Views/Comment/CommentList.cshtml", Model.Slug)*@
+       
 
         <footer class="entry-footer flex flex-column flex-lg-row justify-content-between align-content-start align-lg-items-center">
             <ul class="post-share flex align-items-center order-3 order-lg-1">
