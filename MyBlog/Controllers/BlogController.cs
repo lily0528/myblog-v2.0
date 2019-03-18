@@ -182,22 +182,20 @@ namespace MyBlog.Controllers
 
         [HttpGet]
         [Route("Myblog/{slug}")]
-        public ActionResult DetailsByName(string Slug)
+        public ActionResult DetailsByName(string slug)
         {
-            if (Slug == null)
+            if (slug == null)
                 return RedirectToAction(nameof(BlogController.BlogList));
 
             //var userId = User.Identity.GetUserId();
             var blog = DbContext.Blogs.FirstOrDefault(p =>
-               p.Slug == Slug);
+               p.Slug == slug);
             //var blog = DbContext.Blogs.FirstOrDefault(p =>
             //p.Id == id.Value &&
             //p.UserId == userId);
 
             if (blog == null)
                 return RedirectToAction(nameof(BlogController.BlogList));
-
-
 
             var model = new DetailBlogViewModel();
             model.Slug = blog.Slug;
@@ -209,7 +207,7 @@ namespace MyBlog.Controllers
             model.DateUpdated = blog.DateUpdated;
             /*return RedirectToAction("CommentList", "CommentController", new { slug = blog.Slug })*/;
             return View("Details", model);
-            //return View("Details", model);
+           
         }
 
         public ActionResult Details(int? id)

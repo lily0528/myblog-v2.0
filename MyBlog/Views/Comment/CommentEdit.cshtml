@@ -1,7 +1,26 @@
-﻿
+﻿@model EditCommentViewModel
 @{
     ViewBag.Title = "CommentEdit";
 }
 
-<h2>CommentEdit</h2>
-
+<div class="col-12 col-lg-9">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="comment-reply-title">Manage a reply</h3>
+            <!--Need to Add ENCTYPE help to get media object-->
+            <form enctype="multipart/form-data" method="post">
+                @Html.ValidationSummary(false)
+                <div class="form-group">
+                    @Html.LabelFor(p => p.UpdateReason, "Update-Reason")
+                    @Html.EditorFor(input => input.UpdateReason, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(input => input.UpdateReason)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(p => p.Body, "Body")
+                    @Html.TextAreaFor(p => p.Body, new { @class = "form-control", placeholder = "Body", rows = 5, columns = 5 })
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

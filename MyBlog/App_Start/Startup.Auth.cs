@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using MyBlog.Models;
+using Owin.Security.Providers.GitHub;
 
 namespace MyBlog
 {
@@ -54,9 +55,11 @@ namespace MyBlog
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseGitHubAuthentication("52f590c6b722b3ee9e39", "87214102806d7de77f5d192dba93c81d19199b14");
+
+            app.UseFacebookAuthentication(
+               appId: "3099182200107459",
+               appSecret: "5c92067c73d33adf11d471e03c45375c");
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {

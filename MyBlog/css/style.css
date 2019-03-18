@@ -731,6 +731,7 @@ a:hover, a:active {
 
 .comment-wrap {
     width: calc(100% - 84px);
+
 }
 
 .comment-author a {

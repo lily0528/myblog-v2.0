@@ -31,7 +31,7 @@ namespace MyBlog.Controllers
             var userId = User.Identity.GetUserId();
             var foundPost = DbContext.Blogs.FirstOrDefault(p => p.Slug == slug);
 
-            var model = new ListCommentViewModel
+            var model = new ListCommentViewModel()
             {
                 Title = foundPost.Title,
                 Slug = foundPost.Slug,
@@ -54,9 +54,7 @@ namespace MyBlog.Controllers
             }
 
             var model = new CreateCommentViewModel()
-            // who dont use Comment Model?
-            //InvalidOperationException: The model item passed into the dictionary is of type 'MyBlog.Models.Domain.Comment', but this dictionary requires a model item of type 'MyBlog.Models.ViewModels.CreateCommentViewModel'.
-            //var model = new Comment()
+        
             {
                 BlogId = blog.Id
             };
@@ -70,7 +68,7 @@ namespace MyBlog.Controllers
         {
             var userId = User.Identity.GetUserId();
             var blog = DbContext.Blogs.FirstOrDefault(
-                p => p.Slug == "slug" && p.UserId == userId);
+                p => p.Slug == slug && p.UserId == userId);
             if (userId == null)
             {
                 return RedirectToAction(nameof(BlogController.DetailsByName));
@@ -84,18 +82,62 @@ namespace MyBlog.Controllers
             DbContext.Comments.Add(comment);
             DbContext.SaveChanges();
             //return RedirectToAction(nameof(BlogController.DetailsByName));
-            return RedirectToAction("DetailsByname", "Blog", slug);
+            //next one have problem
+            //return RedirectToAction("DetailsByname", "Blog", slug); 
+            return RedirectToAction("DetailsByname", "Blog", new { slug = blog.Slug });
         }
 
         [HttpGet]
+        //[ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Moderator")]
         public ActionResult CommentEdit(int? id)
         {
             if (!id.HasValue)
             {
                 return RedirectToAction(nameof(BlogController.DetailsByName));
             }
-            var comment= DbContext.Comments.FirstOrDefault(p => p.Id == id);
+            var comment = DbContext.Comments.FirstOrDefault(p => p.Id == id);
+            var model = new EditCommentViewModel();
+            model.UpdateReason = comment.UpdateReason;
+            model.Body = comment.Body;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult CommentEdit(int? id, EditCommentViewModel formdata)
+        {
+            if (!id.HasValue)
+            {
+                return RedirectToAction(nameof(BlogController.DetailsByName));
+            }
+            Comment comment = new Comment();
+            comment = DbContext.Comments.FirstOrDefault(p => p.Id == id);
+            comment.Body = formdata.Body;
+            comment.UpdateReason = formdata.UpdateReason;
+            DbContext.Comments.Add(comment);
+            DbContext.SaveChanges();
             return View();
+         }
+
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Moderator")]
+        public ActionResult CommentDel(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return RedirectToAction(nameof(BlogController.DetailsByName));
+            }
+            Comment comment = new Comment();
+            comment = DbContext.Comments.FirstOrDefault(p => p.Id == id);
+            string commentSlug = comment.Blog.Slug;
+            DbContext.Comments.Remove(comment);
+            DbContext.SaveChanges();
+
+            return RedirectToAction("DetailsByname", "Blog", new { slug = commentSlug });
         }
     }
+
+
 }

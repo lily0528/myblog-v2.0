@@ -4,21 +4,37 @@
     Layout = null;
 }
 
-<h2>CommentList</h2>
-<div class="col-12 col-lg-9">
-    <div><h2>@Model.Title</h2></div>
-    <div><h2>@Model.Slug</h2></div>
-    @foreach (var record in Model.Comments)
-    {
-    <div class="content-wrap">
-        <h4 class="entry-title">@record.Body</h4>
-        <ul>
-            <li>
-                <a href="@Url.Action("CommentEdit", "Comment", new { id = record.Id })">Edit</a>
-            </li>
-        </ul>
-    </div><!-- .content-wrap -->
-    }
-</div>
+@foreach (var record in Model.Comments)
+{
+    <div class="comment-wrap">
+        <div class="comment-author flex flex-wrap align-items-center">
+            <div>
+                <span class="fn">
+                    <a href="#">@record.User.UserName</a>
+                </span>
+                <span class="comment-meta">
+                    <a href="#">
+                        @record.DateCreated.Date.ToString("MMMM dd yyyy")
+                    </a>
+                </span>
+            </div>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                {
+                    <div class="reply">
+                        <a href="@Url.Action("CommentEdit", "Comment", new { id = record.Id })"> Edit </a>
+                    </div>
+                    <div class="reply">
+                        <a href="@Url.Action("CommentDel", "Comment", new { id = record.Id })"> Delete </a>
+                    </div>
+                }
+            }
+        </div>
+        <p>@record.Body</p>
+    </div>
+}
+
 
 

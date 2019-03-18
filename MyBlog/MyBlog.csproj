@@ -45,7 +45,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+      <HintPath>..\packages\Facebook.7.0.6\lib\net45\Facebook.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Owin.Security.Providers.GitHub, Version=2.0.0.0, Culture=neutral, PublicKeyToken=1328b8c16b108c43, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.Security.Providers.GitHub.2.26.0\lib\net45\Owin.Security.Providers.GitHub.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -191,6 +197,7 @@
     <Compile Include="Models\ViewModels\CreateBlogViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateCommentViewModel.cs" />
     <Compile Include="Models\ViewModels\DetailBlogViewModel.cs" />
+    <Compile Include="Models\ViewModels\EditCommentViewModel.cs" />
     <Compile Include="Models\ViewModels\HomeBlogViewModel.cs" />
     <Compile Include="Models\ViewModels\IndexBlogViewModel.cs" />
     <Compile Include="Models\ViewModels\ListCommentViewModel.cs" />

@@ -5,35 +5,32 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
-<div class="col-12 col-lg-9">
-    <div class="row">
-        <div class="col-md-12">
-            @using (Html.BeginForm("CreateComment", "Comment", FormMethod.Post, new { enctype = "Multipart/form-data" }))
-            {
-                @Html.ValidationSummary(false)
-                @*@Html.AntiForgeryToken()*@
-
-                @Html.EditorFor(model => model.slug, new { htmlAttributes = new { @type = "hidden" } })
-                <div class="form-group">
-                    @Html.LabelFor(p => p.Body, "Leave a comment")
-                    @Html.TextAreaFor(p => p.Body, new { @class = "form-control", placeholder = "Body", rows = 5, columns = 5 })
-                </div>
-                <div></div>
-                <button type="submit" class="btn btn-default">Submit</button>
-            }
-
-            @*<form method="post" enctype="multipart/form-data">
-                @Html.ValidationSummary(false)
-                <div class="form-group">
-                    @Html.LabelFor(p => p.Body, "Leave a comment")
-                    @Html.TextAreaFor(p => p.Body, new { @class = "form-control", placeholder = "Body", rows = 5, columns = 5 })
-                </div>
-
-                <button type="submit" class="btn btn-default">Submit</button>
-            </form>*@
-        </div>
+<div class="comments-form">
+    <div class="comment-respond">
+        <h3 class="comment-reply-title">Leave a reply</h3>
+        @using (Html.BeginForm("CreateComment", "Comment", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+        {
+            @Html.ValidationSummary(false)
+            @*@Html.AntiForgeryToken()*@
+            @Html.EditorFor(model => model.slug, new { htmlAttributes = new { @type = "hidden" } })
+            <div class="form-group">
+                @Html.TextAreaFor(p => p.Body, new { @class = "form-control", placeholder = "Message", rows = 5, columns = 10 })
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        }
     </div>
 </div>
+
+@*<form method="post" enctype="multipart/form-data">
+        @Html.ValidationSummary(false)
+        <div class="form-group">
+            @Html.LabelFor(p => p.Body, "Leave a comment")
+            @Html.TextAreaFor(p => p.Body, new { @class = "form-control", placeholder = "Body", rows = 5, columns = 5 })
+        </div>
+
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>*@
+
+
 
 

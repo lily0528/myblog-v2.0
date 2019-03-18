@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Facebook;
+using Microsoft.AspNet.Identity;
 using MyBlog.Models;
 using MyBlog.Models.ViewModels;
 using System;
@@ -7,6 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace MyBlog.Controllers
 {
@@ -18,26 +20,66 @@ namespace MyBlog.Controllers
         {
             DbContext = new ApplicationDbContext();
         }
-        public ActionResult Index()
+        public ActionResult Index(string search)
         {
             var isAdmin = User.IsInRole("Admin");
+            //if (!string.IsNullOrWhiteSpace(search))
+            //{
                 var model = DbContext.Blogs
-                .Where(p => isAdmin ? true : p.Published)
-                .Select(p => new HomeBlogViewModel
-                {
-
-                    Id = p.Id,
-                    Title = p.Title,
-                    Body = p.Body,
-                    Published = p.Published,
-                    MediaUrl = p.MediaUrl,
-                    DateCreated = p.DateCreated,
-                    DateUpdated = p.DateUpdated,
-                    Slug = p.Slug
-                }).ToList();
+                    .Where(p => isAdmin ? true : p.Published && (p.Title.Contains(search) ||
+                                p.Body.Contains(search) ||
+                                p.Slug.Contains(search)))
+                    .Select(p => new HomeBlogViewModel
+                    {
+                        Id = p.Id,
+                        Title = p.Title,
+                        Body = p.Body,
+                        Published = p.Published,
+                        MediaUrl = p.MediaUrl,
+                        DateCreated = p.DateCreated,
+                        DateUpdated = p.DateUpdated,
+                        Slug = p.Slug
+                    }).ToList();
                 return View(model);
+            //}
+            //else
+            //{
+            //    return View();
+            //}
         }
 
+        //public ActionResult Search()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public ActionResult Search(string search)
+        //{
+        //    if (!string.IsNullOrWhiteSpace(search))
+        //    {
+        //        var model = DbContext.Blogs
+        //            .Where(p => p.Title.Contains(search) ||
+        //                        p.Body.Contains(search) ||
+        //                        p.Slug.Contains(search))
+        //            .Select(p => new HomeBlogViewModel
+        //            {
+        //                Id = p.Id,
+        //                Title = p.Title,
+        //                Body = p.Body,
+        //                Published = p.Published,
+        //                MediaUrl = p.MediaUrl,
+        //                DateCreated = p.DateCreated,
+        //                DateUpdated = p.DateUpdated,
+        //                Slug = p.Slug
+        //            }).ToList();
+        //        return View(model);
+        //    }
+        //    else
+        //    {
+        //        return View();
+        //    }
+        //}
 
         public ActionResult About()
         {
@@ -52,5 +94,7 @@ namespace MyBlog.Controllers
 
             return View();
         }
+
     }
+
 }
