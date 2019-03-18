@@ -41,13 +41,12 @@
                                     <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
                                 </ul>
                             </div><!-- .header-bar-social -->
-                            @*@using (Html.BeginForm("Search", "Home", FormMethod.Post, new { enctype = "Multipart/form-data" }))*@
+                           
                             @using (Html.BeginForm("Index", "Home", FormMethod.Post))
                             {
                                 <div class="header-bar-search d-none d-md-block">
                                     <input type="text" placeholder="Search" name="search">
-                                    <button type="submit" class="btn btn-default">Submit</button>
-                              
+                                    <button type="submit" class="btn btn-default">Search</button>
                                 </div><!-- .header-bar-search -->
                             }
                         </div><!-- .col -->   
@@ -92,12 +91,6 @@
                                     <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
                                 </ul>
                             </div><!-- .header-bar-social -->
-
-                            @*<div class="header-bar-search d-md-none">
-                                <form>
-                                    <input type="search" placeholder="Search">
-                                </form>
-                            </div> .header-bar-search*@ 
                         </nav><!-- .site-navigation -->
                     </div><!-- .col -->
                 </div><!-- .row -->

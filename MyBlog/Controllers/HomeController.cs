@@ -1,6 +1,7 @@
 ﻿using Facebook;
 using Microsoft.AspNet.Identity;
 using MyBlog.Models;
+using MyBlog.Models.Domain;
 using MyBlog.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace MyBlog.Controllers
     {
 
         private ApplicationDbContext DbContext;
+       
         public HomeController()
         {
             DbContext = new ApplicationDbContext();
@@ -23,63 +25,34 @@ namespace MyBlog.Controllers
         public ActionResult Index(string search)
         {
             var isAdmin = User.IsInRole("Admin");
-            //if (!string.IsNullOrWhiteSpace(search))
-            //{
-                var model = DbContext.Blogs
-                    .Where(p => isAdmin ? true : p.Published && (p.Title.Contains(search) ||
-                                p.Body.Contains(search) ||
-                                p.Slug.Contains(search)))
-                    .Select(p => new HomeBlogViewModel
-                    {
-                        Id = p.Id,
-                        Title = p.Title,
-                        Body = p.Body,
-                        Published = p.Published,
-                        MediaUrl = p.MediaUrl,
-                        DateCreated = p.DateCreated,
-                        DateUpdated = p.DateUpdated,
-                        Slug = p.Slug
-                    }).ToList();
-                return View(model);
-            //}
-            //else
-            //{
-            //    return View();
-            //}
+
+            //importan! It needs to be defined blog type
+            IQueryable<Blog> blog;
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                blog = DbContext.Blogs
+                   .Where(p => isAdmin ? true : p.Published && (p.Title.Contains(search) ||
+                               p.Body.Contains(search) ||
+                               p.Slug.Contains(search)));
+            }
+            else
+            {
+                blog = DbContext.Blogs
+                    .Where(p => isAdmin ? true : p.Published);
+            }
+            var model = blog.Select(p => new HomeBlogViewModel
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Body = p.Body,
+                Published = p.Published,
+                MediaUrl = p.MediaUrl,
+                DateCreated = p.DateCreated,
+                DateUpdated = p.DateUpdated,
+                Slug = p.Slug
+            }).ToList();
+            return View(model);
         }
-
-        //public ActionResult Search()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public ActionResult Search(string search)
-        //{
-        //    if (!string.IsNullOrWhiteSpace(search))
-        //    {
-        //        var model = DbContext.Blogs
-        //            .Where(p => p.Title.Contains(search) ||
-        //                        p.Body.Contains(search) ||
-        //                        p.Slug.Contains(search))
-        //            .Select(p => new HomeBlogViewModel
-        //            {
-        //                Id = p.Id,
-        //                Title = p.Title,
-        //                Body = p.Body,
-        //                Published = p.Published,
-        //                MediaUrl = p.MediaUrl,
-        //                DateCreated = p.DateCreated,
-        //                DateUpdated = p.DateUpdated,
-        //                Slug = p.Slug
-        //            }).ToList();
-        //        return View(model);
-        //    }
-        //    else
-        //    {
-        //        return View();
-        //    }
-        //}
 
         public ActionResult About()
         {
@@ -94,7 +67,5 @@ namespace MyBlog.Controllers
 
             return View();
         }
-
     }
-
 }
