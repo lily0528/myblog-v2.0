@@ -31,27 +31,28 @@
             <p>@Html.Raw(Model.Body)</p>
         </div><!-- .entry-content -->
         @Html.Action("CommentList", "Comment", new { slug = Model.Slug })
-        @Html.Action("CreateComment", "Comment", new { slug = Model.Slug })
-        @*@Html.Partial("~/Views/Comment/CommentList.cshtml", Model.Slug)*@
-       
+        @if (User.Identity.IsAuthenticated)
+        {
+            @Html.Action("CreateComment", "Comment", new { slug = Model.Slug })
+            @*@Html.Partial("~/Views/Comment/CommentList.cshtml", Model.Slug)*@
+        }
+            <footer class="entry-footer flex flex-column flex-lg-row justify-content-between align-content-start align-lg-items-center">
+                <ul class="post-share flex align-items-center order-3 order-lg-1">
+                    <label>Share</label>
+                    <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                </ul><!-- .post-share -->
 
-        <footer class="entry-footer flex flex-column flex-lg-row justify-content-between align-content-start align-lg-items-center">
-            <ul class="post-share flex align-items-center order-3 order-lg-1">
-                <label>Share</label>
-                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-            </ul><!-- .post-share -->
+                <a class="read-more order-2" href="javascript:window.opener=null;window.open('','_self');window.close();">Close</a>
 
-            <a class="read-more order-2" href="javascript:window.opener=null;window.open('','_self');window.close();">Close</a>
-
-            <div class="comments-count order-1 order-lg-3">
-                <a href="#">2 Comments</a>
-            </div><!-- .comments-count -->
-        </footer><!-- .entry-footer -->
-    </div><!-- .content-wrap -->
+                <div class="comments-count order-1 order-lg-3">
+                    <a href="#">2 Comments</a>
+                </div><!-- .comments-count -->
+            </footer><!-- .entry-footer -->
+        </div><!-- .content-wrap -->
 
     <div class="pagination">
         <ul class="flex align-items-center">

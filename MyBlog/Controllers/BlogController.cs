@@ -40,9 +40,7 @@ namespace MyBlog.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult BlogList()
         {
-            var userId = User.Identity.GetUserId();
             var model = DbContext.Blogs
-                .Where(p => p.UserId == userId)
                 .Select(p => new IndexBlogViewModel
                 {
                     Id = p.Id,
@@ -100,7 +98,6 @@ namespace MyBlog.Controllers
 
             Blog blog;
             if (!id.HasValue)
-
             {
                 blog = new Blog();
                 blog.UserId = userId;
@@ -140,7 +137,6 @@ namespace MyBlog.Controllers
             DbContext.SaveChanges();
             return RedirectToAction(nameof(BlogController.BlogList));
         }
-
 
         [HttpGet]
         public ActionResult Edit(int? id)
@@ -182,17 +178,13 @@ namespace MyBlog.Controllers
 
         [HttpGet]
         [Route("Myblog/{slug}")]
-        public ActionResult DetailsByName(string slug)
+        public ActionResult Details(string slug)
         {
             if (slug == null)
                 return RedirectToAction(nameof(BlogController.BlogList));
 
-            //var userId = User.Identity.GetUserId();
             var blog = DbContext.Blogs.FirstOrDefault(p =>
                p.Slug == slug);
-            //var blog = DbContext.Blogs.FirstOrDefault(p =>
-            //p.Id == id.Value &&
-            //p.UserId == userId);
 
             if (blog == null)
                 return RedirectToAction(nameof(BlogController.BlogList));
@@ -205,34 +197,10 @@ namespace MyBlog.Controllers
             model.MediaUrl = blog.MediaUrl;
             model.DateCreated = blog.DateCreated;
             model.DateUpdated = blog.DateUpdated;
-            /*return RedirectToAction("CommentList", "CommentController", new { slug = blog.Slug })*/;
+            /*return RedirectToAction("CommentList", "CommentController", new { slug = blog.Slug })*/
+            ;
             return View("Details", model);
-           
-        }
 
-        public ActionResult Details(int? id)
-        {
-            if (!id.HasValue)
-                return RedirectToAction(nameof(BlogController.BlogList));
-
-            //var userId = User.Identity.GetUserId();
-            var blog = DbContext.Blogs.FirstOrDefault(p =>
-               p.Id == id.Value);
-            //var blog = DbContext.Blogs.FirstOrDefault(p =>
-            //p.Id == id.Value &&
-            //p.UserId == userId);
-
-            if (blog == null)
-                return RedirectToAction(nameof(BlogController.BlogList));
-
-            var model = new DetailBlogViewModel();
-            model.Title = blog.Title;
-            model.Body = blog.Body;
-            model.pulished = blog.Published;
-            model.MediaUrl = blog.MediaUrl;
-            model.DateCreated = blog.DateCreated;
-            model.DateUpdated = blog.DateUpdated;
-            return View(model);
         }
 
         [HttpPost]
@@ -245,16 +213,12 @@ namespace MyBlog.Controllers
                 return RedirectToAction(nameof(BlogController.BlogList));
             }
 
-            var userId = User.Identity.GetUserId();
-
-            var blog = DbContext.Blogs.FirstOrDefault(p => p.Id == id && p.UserId == userId);
-
+            var blog = DbContext.Blogs.FirstOrDefault(p => p.Id == id );
             if (blog != null)
             {
                 DbContext.Blogs.Remove(blog);
                 DbContext.SaveChanges();
             }
-
             return RedirectToAction(nameof(BlogController.BlogList));
         }
 
@@ -265,7 +229,7 @@ namespace MyBlog.Controllers
             str = Regex.Replace(str, @"[\s-]+", " ").Trim();
             str = str.Substring(0, str.Length <= 100 ? str.Length : 100).Trim();
             str = Regex.Replace(str, @"\s", "-");
-           
+
             if (DbContext.Blogs.Any(p => p.Slug == str))
             {
                 Random rand = new Random();

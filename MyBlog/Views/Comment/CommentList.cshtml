@@ -19,17 +19,16 @@
                 </span>
             </div>
 
-            @if (User.Identity.IsAuthenticated)
+            @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
             {
-                if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
-                {
-                    <div class="reply">
-                        <a href="@Url.Action("CommentEdit", "Comment", new { id = record.Id })"> Edit </a>
-                    </div>
-                    <div class="reply">
-                        <a href="@Url.Action("CommentDel", "Comment", new { id = record.Id })"> Delete </a>
-                    </div>
-                }
+                <div class="reply">
+                    <span> &emsp;</span>
+                    <a href="@Url.Action("CommentEdit", "Comment", new { id = record.Id })"> Edit </a>
+                </div>
+                <div class="reply">
+                    <span> &emsp;</span>
+                    <a href="@Url.Action("CommentDel", "Comment", new { id = record.Id })"> Delete </a>
+                </div>
             }
         </div>
         <p>@record.Body</p>

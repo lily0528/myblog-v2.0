@@ -28,21 +28,20 @@ namespace MyBlog.Controllers
         [HttpGet]
         public ActionResult CommentList(string slug)
         {
-            var userId = User.Identity.GetUserId();
-            var foundPost = DbContext.Blogs.FirstOrDefault(p => p.Slug == slug);
-
+            var foundBlog = DbContext.Blogs.FirstOrDefault(p => p.Slug == slug);
             var model = new ListCommentViewModel()
             {
-                Title = foundPost.Title,
-                Slug = foundPost.Slug,
-                //It is list from blog model
-                Comments = foundPost.Comments.ToList()
+                Title = foundBlog.Title,
+                Slug = foundBlog.Slug,
+                //It is list from blog 
+                Comments = foundBlog.Comments.ToList()
             };
 
             return View(model);
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult CreateComment(string slug)
         {
             var blog = DbContext.Blogs
@@ -62,17 +61,15 @@ namespace MyBlog.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         //Need get slug value form CreateComment.cshtml
+       
+        [Authorize]
         public ActionResult CreateComment(string slug, Comment formdata)
         {
             var userId = User.Identity.GetUserId();
             var blog = DbContext.Blogs.FirstOrDefault(
-                p => p.Slug == slug && p.UserId == userId);
-            if (userId == null)
-            {
-                return RedirectToAction(nameof(BlogController.DetailsByName));
-            }
+                p => p.Slug == slug);
+
             var comment = new Comment();
             comment.BlogId = blog.Id;
             comment.UserId = userId;
@@ -81,10 +78,10 @@ namespace MyBlog.Controllers
             comment.DateUpdated = DateTime.Now;
             DbContext.Comments.Add(comment);
             DbContext.SaveChanges();
-            //return RedirectToAction(nameof(BlogController.DetailsByName));
-            //next one have problem
+
+            //Need to  define new slug 
             //return RedirectToAction("DetailsByname", "Blog", slug); 
-            return RedirectToAction("DetailsByname", "Blog", new { slug = blog.Slug });
+            return RedirectToAction("Details", "Blog", new { slug = blog.Slug });
         }
 
         [HttpGet]
@@ -94,13 +91,12 @@ namespace MyBlog.Controllers
         {
             if (!id.HasValue)
             {
-                return RedirectToAction(nameof(BlogController.DetailsByName));
+                return RedirectToAction(nameof(HomeController.Index));
             }
             var comment = DbContext.Comments.FirstOrDefault(p => p.Id == id);
             var model = new EditCommentViewModel();
             model.UpdateReason = comment.UpdateReason;
             model.Body = comment.Body;
-
             return View(model);
         }
 
@@ -109,16 +105,17 @@ namespace MyBlog.Controllers
         {
             if (!id.HasValue)
             {
-                return RedirectToAction(nameof(BlogController.DetailsByName));
+                return RedirectToAction(nameof(HomeController.Index));
             }
-            Comment comment = new Comment();
-            comment = DbContext.Comments.FirstOrDefault(p => p.Id == id);
+
+            var comment = DbContext.Comments.FirstOrDefault(p => p.Id == id);
             comment.Body = formdata.Body;
             comment.UpdateReason = formdata.UpdateReason;
+            comment.DateUpdated = DateTime.Now;
             DbContext.Comments.Add(comment);
             DbContext.SaveChanges();
-            return View();
-         }
+            return RedirectToAction("Details", "Blog", new { slug = comment.Blog.Slug });
+        }
 
         [HttpGet]
         //[ValidateAntiForgeryToken]
@@ -127,15 +124,19 @@ namespace MyBlog.Controllers
         {
             if (!id.HasValue)
             {
-                return RedirectToAction(nameof(BlogController.DetailsByName));
+                return RedirectToAction(nameof(HomeController.Index));
             }
-            Comment comment = new Comment();
-            comment = DbContext.Comments.FirstOrDefault(p => p.Id == id);
+            //Comment comment = new Comment();
+            var comment = DbContext.Comments.FirstOrDefault(p => p.Id == id);
+            if (comment == null)
+            {
+                return RedirectToAction(nameof(HomeController.Index));
+            }
             string commentSlug = comment.Blog.Slug;
             DbContext.Comments.Remove(comment);
             DbContext.SaveChanges();
 
-            return RedirectToAction("DetailsByname", "Blog", new { slug = commentSlug });
+            return RedirectToAction("Details", "Blog", new { slug = commentSlug });
         }
     }
 

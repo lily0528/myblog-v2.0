@@ -47,10 +47,7 @@
                             <td>@record.DateUpdated</td>
                             <td>@record.MediaUrl</td>
                             <td>
-                                <a target="_blank" href="@Url.Action("DetailsByName", "Blog", new { Slug = record.Slug })">newDetails</a>
-                            </td>
-                            <td>
-                                <a target="_blank" href="@Url.Action("Details", "Blog", new { id = record.Id })">Details</a>
+                                <a target="_blank" href="@Url.Action("Details", "Blog", new { Slug = record.Slug })">Details</a>
                             </td>
                             <td>
                                 <a href="@Url.Action("Edit", "Blog", new { id = record.Id })">Edit</a>

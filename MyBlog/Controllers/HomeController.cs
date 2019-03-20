@@ -25,8 +25,6 @@ namespace MyBlog.Controllers
         public ActionResult Index(string search)
         {
             var isAdmin = User.IsInRole("Admin");
-
-            //importan! It needs to be defined blog type
             IQueryable<Blog> blog;
             if (!string.IsNullOrWhiteSpace(search))
             {

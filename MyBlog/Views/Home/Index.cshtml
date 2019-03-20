@@ -7,45 +7,40 @@
 <div class="col-12 col-lg-9">
     @foreach (var record in Model)
     {
-            <div class="content-wrap">
-                <header class="entry-header">
-                    <h2 class="entry-title">@record.Title</h2>
+        <div class="content-wrap">
+            <header class="entry-header">
+                <h2 class="entry-title">@record.Title</h2>
 
-                    <div class="tags-links">
-                        @if (Request.IsAuthenticated)
-                        {
-                            <span><strong> ͡° ͜ʖ ͡°  </strong></span>
-                            <a href="#">@User.Identity.GetUserName()</a>
-                        }
-                        <span><strong>◕</strong> </span>
-                        <a href="#">@record.DateUpdated.Date.ToString("MMMM dd yyyy")</a>
-                    </div><!-- .tags-links -->
-                </header><!-- .entry-header -->
+                <div class="tags-links">
+                    <span><strong>◕</strong> </span>
+                    <a href="#">@record.DateUpdated.Date.ToString("MMMM dd yyyy")</a>
+                </div><!-- .tags-links -->
+            </header><!-- .entry-header -->
 
-                <figure class="featured-image">
-                    <img src="@Url.Content(record.MediaUrl)" alt="">
-                </figure><!-- .featured-image -->
+            <figure class="featured-image">
+                <img src="@Url.Content(record.MediaUrl)" alt="">
+            </figure><!-- .featured-image -->
 
-                <div class="entry-content">
-                    <p>@Html.Raw(record.Body)</p>
-                </div><!-- .entry-content -->
+            <div class="entry-content">
+                <p>@Html.Raw(record.Body)</p>
+            </div><!-- .entry-content -->
 
-                <footer class="entry-footer flex flex-column flex-lg-row justify-content-between align-content-start align-lg-items-center">
-                    <ul class="post-share flex align-items-center order-3 order-lg-1">
-                        <label>Share</label>
-                        <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                    </ul><!-- .post-share -->
+            <footer class="entry-footer flex flex-column flex-lg-row justify-content-between align-content-start align-lg-items-center">
+                <ul class="post-share flex align-items-center order-3 order-lg-1">
+                    <label>Share</label>
+                    <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                </ul><!-- .post-share -->
 
-                    <a class="read-more order-2" target="_blank" href="@Url.Action("DetailsByName", "Blog", new { Slug = record.Slug })">Read more</a>
-                    <div class="comments-count order-1 order-lg-3">
-                        <a href="#">2 Comments</a>
-                    </div><!-- .comments-count -->
-                </footer><!-- .entry-footer -->
-            </div><!-- .content-wrap -->
+                <a class="read-more order-2" target="_blank" href="@Url.Action("Details", "Blog", new { Slug = record.Slug })">Read more</a>
+                <div class="comments-count order-1 order-lg-3">
+                    <a href="#">2 Comments</a>
+                </div><!-- .comments-count -->
+            </footer><!-- .entry-footer -->
+        </div><!-- .content-wrap -->
     }
 
     <div class="pagination">
