@@ -3,12 +3,9 @@ using MyBlog.Models;
 using MyBlog.Models.Domain;
 using MyBlog.Models.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Mvc;
 
 using Constants = MyBlog.Models.Constants;
@@ -48,7 +45,7 @@ namespace MyBlog.Controllers
                     Body = p.Body,
                     Published = p.Published,
                     DateCreated = p.DateCreated,
-                    DateUpdated = p.DateUpdated,
+                    //DateUpdated = p.DateUpdated,
                     MediaUrl = p.MediaUrl,
                     Slug = p.Slug
                 }).ToList();
@@ -81,9 +78,9 @@ namespace MyBlog.Controllers
             }
             var userId = User.Identity.GetUserId();
 
-            //Slug verify
-            var Slug = formData.Title;
-            Slug = SlugFriendly(Slug);
+            var titleOfFriendly = formData.Title;
+
+            var slug = SlugFriendly(titleOfFriendly);
 
             string fileExtension;
             if (formData.Media != null)
@@ -97,6 +94,7 @@ namespace MyBlog.Controllers
             }
 
             Blog blog;
+
             if (!id.HasValue)
             {
                 blog = new Blog();
@@ -110,17 +108,15 @@ namespace MyBlog.Controllers
                p => p.Id == id);
                 if (blog == null)
                 {
-                    return RedirectToAction(nameof(BlogController.BlogList));
+                    return HttpNotFound();
                 }
+                blog.DateUpdated = DateTime.Now;
             }
-            blog.Slug = Slug;
+            blog.Slug = slug;
             blog.Title = formData.Title;
             blog.Body = formData.Body;
             blog.Published = formData.Published;
-            blog.DateUpdated = DateTime.Now;
 
-
-            //Handling file upload
             if (formData.Media != null)
             {
                 //Set Constants Model(MyBlog.Models.Constants) 
@@ -145,27 +141,28 @@ namespace MyBlog.Controllers
             {
                 return RedirectToAction(nameof(BlogController.BlogList));
             }
-            var userId = User.Identity.GetUserId();
 
             var blog = DbContext.Blogs.FirstOrDefault(
-                p => p.Id == id && p.UserId == userId);
+                p => p.Id == id);
             if (blog == null)
             {
-                return RedirectToAction(nameof(BlogController.Index));
+                return RedirectToAction(nameof(HomeController.Index));
             }
-            var model = new CreateBlogViewModel();
-            model.Title = blog.Title;
-            model.Body = blog.Body;
-            model.Published = blog.Published;
-            model.MediaUrl = blog.MediaUrl;
-            model.DateUpdated = DateTime.Now;
+            var model = new CreateBlogViewModel
+            {
+                Title = blog.Title,
+                Body = blog.Body,
+                Published = blog.Published,
+                MediaUrl = blog.MediaUrl,
+                DateUpdated = DateTime.Now
+            };
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(string Title, CreateBlogViewModel formData)
+        public ActionResult Edit(string title, CreateBlogViewModel formData)
         {
-            if (Title == null)
+            if (title == null)
             {
                 return RedirectToAction(nameof(BlogController.BlogList));
             }
@@ -187,24 +184,22 @@ namespace MyBlog.Controllers
                p.Slug == slug);
 
             if (blog == null)
-                return RedirectToAction(nameof(BlogController.BlogList));
+                return HttpNotFound();
 
-            var model = new DetailBlogViewModel();
-            model.Slug = blog.Slug;
-            model.Title = blog.Title;
-            model.Body = blog.Body;
-            model.pulished = blog.Published;
-            model.MediaUrl = blog.MediaUrl;
-            model.DateCreated = blog.DateCreated;
-            model.DateUpdated = blog.DateUpdated;
-            /*return RedirectToAction("CommentList", "CommentController", new { slug = blog.Slug })*/
-            ;
+            var model = new DetailBlogViewModel
+            {
+                Slug = blog.Slug,
+                Title = blog.Title,
+                Body = blog.Body,
+                pulished = blog.Published,
+                MediaUrl = blog.MediaUrl,
+                DateCreated = blog.DateCreated,
+                DateUpdated = blog.DateUpdated
+            };
             return View("Details", model);
-
         }
 
         [HttpPost]
-        //if need to identify user role,could use [Authorize(Roles = "Admin")]
         [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
@@ -213,7 +208,7 @@ namespace MyBlog.Controllers
                 return RedirectToAction(nameof(BlogController.BlogList));
             }
 
-            var blog = DbContext.Blogs.FirstOrDefault(p => p.Id == id );
+            var blog = DbContext.Blogs.FirstOrDefault(p => p.Id == id);
             if (blog != null)
             {
                 DbContext.Blogs.Remove(blog);
@@ -222,18 +217,18 @@ namespace MyBlog.Controllers
             return RedirectToAction(nameof(BlogController.BlogList));
         }
 
-        private string SlugFriendly(string Slug)
+        private string SlugFriendly(string titleOfFriendly)
         {
-            string str = Slug.ToLower();
+            string str = titleOfFriendly.ToLower();
             str = Regex.Replace(str, @"[^a-z0-9\s-]", "");
             str = Regex.Replace(str, @"[\s-]+", " ").Trim();
             str = str.Substring(0, str.Length <= 100 ? str.Length : 100).Trim();
             str = Regex.Replace(str, @"\s", "-");
 
-            if (DbContext.Blogs.Any(p => p.Slug == str))
+            while (DbContext.Blogs.Any(p => p.Slug == str))
             {
                 Random rand = new Random();
-                str = (str + rand.Next(1, 1000)).ToString();
+                str = str + rand.Next(1, 100).ToString();
             }
             return str;
         }

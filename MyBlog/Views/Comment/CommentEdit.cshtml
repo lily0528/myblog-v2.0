@@ -7,13 +7,11 @@
     <div class="row">
         <div class="col-md-12">
             <h3 class="comment-reply-title">Manage a reply</h3>
-            <!--Need to Add ENCTYPE help to get media object-->
-            <form enctype="multipart/form-data" method="post">
-                @Html.ValidationSummary(false)
+            <form method="post">
                 <div class="form-group">
                     @Html.LabelFor(p => p.UpdateReason, "Update-Reason")
                     @Html.EditorFor(input => input.UpdateReason, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(input => input.UpdateReason)
+                    @Html.ValidationMessageFor(input => input.UpdateReason, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(p => p.Body, "Body")

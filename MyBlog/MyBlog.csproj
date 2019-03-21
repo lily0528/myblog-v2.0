@@ -453,6 +453,7 @@
     <Content Include="Views\Comment\CreateComment.cshtml" />
     <Content Include="Views\Comment\CommentDetail.cshtml" />
     <Content Include="Views\Comment\CommentEdit.cshtml" />
+    <Content Include="Views\Comment\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

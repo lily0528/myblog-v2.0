@@ -5,6 +5,7 @@ using MyBlog.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -20,23 +21,20 @@ namespace MyBlog.Controllers
             DbContext = new ApplicationDbContext();
         }
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         [HttpGet]
         public ActionResult CommentList(string slug)
         {
             var foundBlog = DbContext.Blogs.FirstOrDefault(p => p.Slug == slug);
+            if (foundBlog == null)
+            {
+                return HttpNotFound();
+            }
             var model = new ListCommentViewModel()
             {
                 Title = foundBlog.Title,
                 Slug = foundBlog.Slug,
-                //It is list from blog 
                 Comments = foundBlog.Comments.ToList()
             };
-
             return View(model);
         }
 
@@ -46,14 +44,11 @@ namespace MyBlog.Controllers
         {
             var blog = DbContext.Blogs
                .FirstOrDefault(p => p.Slug == slug);
-
             if (blog == null)
             {
                 return HttpNotFound();
             }
-
             var model = new CreateCommentViewModel()
-        
             {
                 BlogId = blog.Id
             };
@@ -61,39 +56,55 @@ namespace MyBlog.Controllers
         }
 
         [HttpPost]
-        //Need get slug value form CreateComment.cshtml
-       
         [Authorize]
-        public ActionResult CreateComment(string slug, Comment formdata)
+        public ActionResult CreateComment(string slug, CreateCommentViewModel formdata)
         {
+            if (string.IsNullOrWhiteSpace(slug))
+            {
+                RedirectToAction(nameof(HomeController.Index));
+            }
+
             var userId = User.Identity.GetUserId();
             var blog = DbContext.Blogs.FirstOrDefault(
                 p => p.Slug == slug);
+            if (blog == null)
+            {
+                return HttpNotFound();
+            }
 
-            var comment = new Comment();
-            comment.BlogId = blog.Id;
-            comment.UserId = userId;
-            comment.Body = formdata.Body;
-            comment.DateCreated = formdata.DateCreated;
-            comment.DateUpdated = DateTime.Now;
-            DbContext.Comments.Add(comment);
-            DbContext.SaveChanges();
-
-            //Need to  define new slug 
-            //return RedirectToAction("DetailsByname", "Blog", slug); 
-            return RedirectToAction("Details", "Blog", new { slug = blog.Slug });
+            var comment = new Comment
+            {
+                BlogId = blog.Id,
+                UserId = userId,
+                Body = formdata.Body,
+                DateCreated = formdata.DateCreated
+            };
+            if (!string.IsNullOrWhiteSpace(comment.Body))
+            {
+                DbContext.Comments.Add(comment);
+                DbContext.SaveChanges();
+                return RedirectToAction("Details", "Blog", new { slug = blog.Slug });
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpGet]
-        //[ValidateAntiForgeryToken]
+
         [Authorize(Roles = "Admin, Moderator")]
         public ActionResult CommentEdit(int? id)
         {
             if (!id.HasValue)
             {
-                return RedirectToAction(nameof(HomeController.Index));
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var comment = DbContext.Comments.FirstOrDefault(p => p.Id == id);
+            if (comment == null)
+            {
+                return HttpNotFound();
+            }
             var model = new EditCommentViewModel();
             model.UpdateReason = comment.UpdateReason;
             model.Body = comment.Body;
@@ -101,36 +112,46 @@ namespace MyBlog.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Moderator")]
         public ActionResult CommentEdit(int? id, EditCommentViewModel formdata)
         {
             if (!id.HasValue)
             {
-                return RedirectToAction(nameof(HomeController.Index));
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             var comment = DbContext.Comments.FirstOrDefault(p => p.Id == id);
+            if (comment == null)
+            {
+                return HttpNotFound();
+            }
             comment.Body = formdata.Body;
-            comment.UpdateReason = formdata.UpdateReason;
-            comment.DateUpdated = DateTime.Now;
-            DbContext.Comments.Add(comment);
-            DbContext.SaveChanges();
+
+            if (!string.IsNullOrWhiteSpace(formdata.UpdateReason))
+            {
+                comment.UpdateReason = formdata.UpdateReason;
+                comment.DateUpdated = DateTime.Now;
+                DbContext.SaveChanges();
+            }
+            else
+            {
+                return View();
+            }
             return RedirectToAction("Details", "Blog", new { slug = comment.Blog.Slug });
         }
 
         [HttpGet]
-        //[ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Moderator")]
         public ActionResult CommentDel(int? id)
         {
             if (!id.HasValue)
             {
-                return RedirectToAction(nameof(HomeController.Index));
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //Comment comment = new Comment();
             var comment = DbContext.Comments.FirstOrDefault(p => p.Id == id);
             if (comment == null)
             {
-                return RedirectToAction(nameof(HomeController.Index));
+                return HttpNotFound();
             }
             string commentSlug = comment.Blog.Slug;
             DbContext.Comments.Remove(comment);
@@ -139,6 +160,4 @@ namespace MyBlog.Controllers
             return RedirectToAction("Details", "Blog", new { slug = commentSlug });
         }
     }
-
-
 }

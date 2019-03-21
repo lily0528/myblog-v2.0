@@ -42,7 +42,7 @@
                                 </ul>
                             </div><!-- .header-bar-social -->
                            
-                            @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+                            @using (Html.BeginForm("Index", "Home", FormMethod.Get))
                             {
                                 <div class="header-bar-search d-none d-md-block">
                                     <input type="text" placeholder="Search" name="search">
@@ -73,7 +73,10 @@
                             <ul class="flex-lg flex-lg-row justify-content-lg-center align-content-lg-center">
                                 <li class="current-menu-item"><a href="@Url.Action("Index","Home")">Home</a></li>
                                 <li><a href="@Url.Action("Register","Account")">Register</a></li>
+                                @if (!User.Identity.IsAuthenticated)
+                                {
                                 <li><a href="@Url.Action("login","Account")">Login in</a></li>
+                                }
                                 @if (User.IsInRole("Admin"))
                                 {
                                     <li><a href="@Url.Action("BlogList", "Blog")">Blog</a></li>

@@ -15,7 +15,6 @@
     <div class="row">
         <div class="col-md-12">
             <form method="post" enctype="multipart/form-data">
-                @Html.ValidationSummary(false)
                 <div class="form-group">
                     @Html.LabelFor(p => p.Title, "Blog Title:")
                     @Html.TextBoxFor(p => p.Title, new { @class = "form-control", placeholder = "Blog Title" })

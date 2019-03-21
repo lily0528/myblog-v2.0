@@ -16,14 +16,12 @@ namespace MyBlog.Models.Domain
 
         public int Id { get; set; }
      
-
-        [Required]
         public string Body { get; set; }
+        
         public string UpdateReason { get; set; }
         public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public DateTime? DateUpdated { get; set; }
         
-
         public Comment()
         {
             DateCreated = DateTime.Now;

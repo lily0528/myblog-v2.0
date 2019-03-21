@@ -12,11 +12,11 @@ namespace MyBlog.Models.ViewModels
         public string Title { get; set; }
         public string Body { get; set; }
         public bool pulished { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public DateTime? DateUpdated { get; set; }
         public DateTime DateCreated { get; set; }
         public string MediaUrl { get; set; }
         public string Slug { get; set; }
-        // public List<Comment> Comments { get; set; }
+     
 
     }
 }

@@ -12,7 +12,7 @@ namespace MyBlog.Models.ViewModels
         public string UserId { get; set; }
         public int BlogId { get; set; }
         
-        public string slug { get; set; }
+        public string Slug { get; set; }
         //public int Id { get; set; }
 
         [Required]
@@ -23,6 +23,6 @@ namespace MyBlog.Models.ViewModels
         {
             DateCreated = DateTime.Now;
         }
-        //public List<Comment> Comments { get; set; }
+    
     }
 }

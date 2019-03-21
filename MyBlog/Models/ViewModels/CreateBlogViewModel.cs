@@ -16,14 +16,11 @@ namespace MyBlog.Models.ViewModels
         [AllowHtml]
         public string Body { get; set; }
 
-        
         public bool Published { get; set; }
 
-     
         public DateTime DateCreated { get; set; }
 
-
-        public DateTime DateUpdated { get; set; }
+        public DateTime? DateUpdated { get; set; }
 
         public HttpPostedFileBase Media { get; set; }
 

@@ -11,25 +11,17 @@
         @using (Html.BeginForm("CreateComment", "Comment", FormMethod.Post, new { enctype = "Multipart/form-data" }))
         {
             @Html.ValidationSummary(false)
-            @*@Html.AntiForgeryToken()*@
-            @Html.EditorFor(model => model.slug, new { htmlAttributes = new { @type = "hidden" } })
-            <div class="form-group">
-                @Html.TextAreaFor(p => p.Body, new { @class = "form-control", placeholder = "Message", rows = 5, columns = 10 })
-            </div>
+          
+            @Html.EditorFor(model => model.Slug, new { htmlAttributes = new { @type = "hidden" } })
+        <div class="form-group">
+            @Html.TextAreaFor(p => p.Body, new { @class = "form-control", placeholder = "Message", rows = 5, columns = 10 })
+            @Html.ValidationMessageFor(input => input.Body, "", new { @class = "text-danger" })
+        </div>
             <button type="submit" class="btn btn-default">Submit</button>
         }
     </div>
 </div>
 
-@*<form method="post" enctype="multipart/form-data">
-        @Html.ValidationSummary(false)
-        <div class="form-group">
-            @Html.LabelFor(p => p.Body, "Leave a comment")
-            @Html.TextAreaFor(p => p.Body, new { @class = "form-control", placeholder = "Body", rows = 5, columns = 5 })
-        </div>
-
-        <button type="submit" class="btn btn-default">Submit</button>
-    </form>*@
 
 
 

@@ -12,12 +12,11 @@ namespace MyBlog.Models.ViewModels
         public int BlogId { get; set; }
 
         public string Body { get; set; }
-        //public string slug { get; set; }
         public int Id { get; set; }
 
         [Required]
         public string UpdateReason { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public DateTime? DateUpdated { get; set; }
 
         public EditCommentViewModel()
         {

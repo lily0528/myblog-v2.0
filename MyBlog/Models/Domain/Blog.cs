@@ -22,7 +22,7 @@ namespace MyBlog.Models.Domain
         public bool Published { get; set; }
 
         public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public DateTime? DateUpdated { get; set; }
 
         public string MediaUrl { get; set; }
         public string Slug { get; set; }

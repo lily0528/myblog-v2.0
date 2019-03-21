@@ -16,9 +16,9 @@
                     <a href="#">@User.Identity.GetUserName()</a>
                 }
                 <span><strong> ◕ </strong> </span>
-                @if (Model.DateUpdated != null)
+                @if (Model.DateCreated != null)
                 {
-                    <a href="#">@Model.DateUpdated.Date.ToString("MMMM dd yyyy")</a>
+                    <a href="#">@Model.DateCreated.ToString("MMMM dd yyyy")</a>
                 }
             </div><!-- .tags-links -->
         </header><!-- .entry-header -->
@@ -30,6 +30,7 @@
         <div class="entry-content">
             <p>@Html.Raw(Model.Body)</p>
         </div><!-- .entry-content -->
+    
         @Html.Action("CommentList", "Comment", new { slug = Model.Slug })
         @if (User.Identity.IsAuthenticated)
         {
