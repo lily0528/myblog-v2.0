@@ -99,7 +99,6 @@ namespace MyBlog.Migrations
             blog.Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel tortor facilisis, volutpat nulla placerat, tincidunt mi. Nullam vel orci dui. Suspendisse sit amet laoreet neque. Fusce sagittis suscipit sem a consequat. Proin nec interdum sem. Quisque in porttitor magna, a imperdiet est.";
             blog.Published = true;
             blog.DateCreated = DateTime.Now;
-            blog.DateUpdated = DateTime.Now;
             blog.MediaUrl = "~/Upload/1.png";
             blog.Slug = "love-spring";
             blog.UserId = adminUser.Id;
@@ -112,7 +111,6 @@ namespace MyBlog.Migrations
             blogitem2.Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel tortor facilisis, volutpat nulla placerat, tincidunt mi. Nullam vel orci dui. Suspendisse sit amet laoreet neque. Fusce sagittis suscipit sem a consequat. Proin nec interdum sem. Quisque in porttitor magna, a imperdiet est.";
             blogitem2.Published = true;
             blogitem2.DateCreated = DateTime.Now;
-            blogitem2.DateUpdated = DateTime.Now;
             blogitem2.MediaUrl = "~/Upload/2.jpg";
             blogitem2.Slug = "love-summer";
             blogitem2.UserId = adminUser.Id;
@@ -125,7 +123,6 @@ namespace MyBlog.Migrations
             blogitem3.Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel tortor facilisis, volutpat nulla placerat, tincidunt mi. Nullam vel orci dui. Suspendisse sit amet laoreet neque. Fusce sagittis suscipit sem a consequat. Proin nec interdum sem. Quisque in porttitor magna, a imperdiet est.";
             blogitem3.Published = true;
             blogitem3.DateCreated = DateTime.Now;
-            blogitem3.DateUpdated = DateTime.Now;
             blogitem3.MediaUrl = "~/Upload/3.jpg";
             blogitem3.Slug = "love-fall";
             blogitem3.UserId = adminUser.Id;
